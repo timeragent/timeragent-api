@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 try {
     (new Dotenv\Dotenv(__DIR__.'/../'))->load();
@@ -23,9 +23,9 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
-// $app->withFacades();
+$app->withFacades();
 
-// $app->withEloquent();
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -59,13 +59,17 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->middleware(
+    [
+        App\Http\Middleware\ThrottleRequests::class,
+    ]
+);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware(
+    [
+        'auth' => App\Http\Middleware\Authenticate::class,
+    ]
+);
 
 /*
 |--------------------------------------------------------------------------
@@ -78,9 +82,24 @@ $app->singleton(
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+$app->configure('graphql');
+
+$providers = [
+    'App\Providers\AppServiceProvider',
+    'App\Providers\AuthServiceProvider',
+    'App\Providers\EventServiceProvider',
+    'Illuminate\Redis\RedisServiceProvider',
+
+    'Vluzrmos\Tinker\TinkerServiceProvider',
+    'Folklore\GraphQL\LumenServiceProvider',
+    'Laravel\Passport\PassportServiceProvider',
+];
+
+foreach ($providers as $provider) {
+    if (class_exists($provider)) {
+        $app->register($provider);
+    }
+}
 
 /*
 |--------------------------------------------------------------------------
