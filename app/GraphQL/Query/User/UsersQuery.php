@@ -1,6 +1,6 @@
 <?php
 
-namespace App\GraphQL\Query;
+namespace App\GraphQL\Query\User;
 
 use App\Models\User;
 use Folklore\GraphQL\Support\Query;
@@ -21,7 +21,7 @@ class UsersQuery extends Query
     public function args()
     {
         return [
-            'id'          => ['name' => 'id', 'type' => Type::string()],
+            'uuid'        => ['name' => 'uuid', 'type' => Type::string()],
             'email'       => ['name' => 'email', 'type' => Type::string()],
             'first_name'  => ['name' => 'first_name', 'type' => Type::string()],
             'last_name'   => ['name' => 'last_name', 'type' => Type::string()],
@@ -31,8 +31,8 @@ class UsersQuery extends Query
 
     public function resolve($root, $args)
     {
-        if (isset($args['id'])) {
-            return User::where('id', $args['id'])->get();
+        if (isset($args['uuid'])) {
+            return User::where('uuid', $args['uuid'])->get();
         } else if (isset($args['email'])) {
             return User::where('email', $args['email'])->get();
         } else {

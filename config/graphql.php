@@ -1,10 +1,12 @@
 <?php
 
 
-use App\GraphQL\Mutation\UpdateUserEmailMutation;
-use App\GraphQL\Mutation\UpdateUserPasswordMutation;
-use App\GraphQL\Query\OrganizationQuery;
-use App\GraphQL\Query\UsersQuery;
+use App\GraphQL\InputTypes\UserInputType;
+use App\GraphQL\Mutation\User\CreateUserMutation;
+use App\GraphQL\Mutation\User\UpdateUserEmailMutation;
+use App\GraphQL\Mutation\User\UpdateUserPasswordMutation;
+use App\GraphQL\Query\Organization\OrganizationQuery;
+use App\GraphQL\Query\User\UsersQuery;
 use App\GraphQL\Type\OrganizationType;
 use App\GraphQL\Type\UserType;
 
@@ -135,6 +137,7 @@ return [
                 'organizations' => OrganizationQuery::class,
             ],
             'mutation' => [
+                'createUser'         => CreateUserMutation::class,
                 'updateUserEmail'    => UpdateUserEmailMutation::class,
                 'updateUserPassword' => UpdateUserPasswordMutation::class,
             ],
@@ -200,8 +203,12 @@ return [
      * ]
      */
     'types'                 => [
+        // Generic Types
         'User'         => UserType::class,
         'Organization' => OrganizationType::class,
+
+        // Input Types
+        'UserInput'    => UserInputType::class,
     ],
 
     /*

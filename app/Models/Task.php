@@ -4,6 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Task
+ *
+ * @property-read \App\Models\Project                                              $project
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TimeEntry[] $timeEntries
+ * @mixin \Eloquent
+ */
 class Task extends Model
 {
     protected $fillable = [

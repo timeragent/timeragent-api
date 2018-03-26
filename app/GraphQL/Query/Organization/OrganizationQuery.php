@@ -1,6 +1,6 @@
 <?php
 
-namespace App\GraphQL\Query;
+namespace App\GraphQL\Query\Organization;
 
 use App\Models\Organization;
 use Folklore\GraphQL\Support\Query;
@@ -21,7 +21,7 @@ class OrganizationQuery extends Query
     public function args()
     {
         return [
-            'id'      => ['name' => 'id', 'type' => Type::string()],
+            'uuid'    => ['name' => 'uuid', 'type' => Type::string()],
             'email'   => ['name' => 'email', 'type' => Type::string()],
             'name'    => ['name' => 'name', 'type' => Type::string()],
             'address' => ['name' => 'address', 'type' => Type::string()],
@@ -32,8 +32,8 @@ class OrganizationQuery extends Query
 
     public function resolve($root, $args)
     {
-        if (isset($args['id'])) {
-            return Organization::where('id', $args['id'])->get();
+        if (isset($args['uuid'])) {
+            return Organization::where('uuid', $args['uuid'])->get();
         } else if (isset($args['email'])) {
             return Organization::where('email', $args['email'])->get();
         } else {

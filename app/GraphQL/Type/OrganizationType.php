@@ -21,9 +21,9 @@ class OrganizationType extends GraphQLType
     public function fields()
     {
         return [
-            'id'      => [
+            'uuid'    => [
                 'type'        => Type::nonNull(Type::string()),
-                'description' => 'The id of the user',
+                'description' => 'The uuid of the user',
             ],
             'email'   => [
                 'type'        => Type::string(),

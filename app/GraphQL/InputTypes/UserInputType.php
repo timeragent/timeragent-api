@@ -1,15 +1,14 @@
 <?php
 
-namespace App\GraphQL\Type;
+namespace App\GraphQL\InputTypes;
 
-use App\Models\User;
-use Folklore\GraphQL\Support\Type as GraphQLType;
+use Folklore\GraphQL\Support\InputType;
 use GraphQL\Type\Definition\Type;
 
-class UserType extends GraphQLType
+class UserInputType extends InputType
 {
     protected $attributes = [
-        'name'        => 'User',
+        'name'        => 'UserInput',
         'description' => 'A user',
     ];
 
@@ -51,8 +50,8 @@ class UserType extends GraphQLType
 
     // If you want to resolve the field yourself, you can declare a method
     // with the following format resolve[FIELD_NAME]Field()
-    protected function resolveNameField(User $user, $args)
+    protected function resolveNameField($root, $args)
     {
-        return $user->first_name . ' ' . $user->last_name;
+        return $root->first_name . ' ' . $root->last_name;
     }
 }

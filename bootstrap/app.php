@@ -93,6 +93,7 @@ $providers = [
     'Vluzrmos\Tinker\TinkerServiceProvider',
     'Folklore\GraphQL\LumenServiceProvider',
     'Laravel\Passport\PassportServiceProvider',
+    'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // TODO: Add check for local environment
 ];
 
 foreach ($providers as $provider) {

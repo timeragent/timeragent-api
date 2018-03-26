@@ -13,10 +13,12 @@
 
 use App\Models\Organization;
 use App\Models\User;
+use Ramsey\Uuid\Uuid;
 
 $factory->define(
     User::class, function (Faker\Generator $faker) {
     return [
+        'uuid'           => Uuid::uuid4()->toString(),
         'first_name'     => $faker->firstName,
         'last_name'      => $faker->lastName,
         'middle_name'    => null,
@@ -32,6 +34,7 @@ $factory->define(
 $factory->define(
     Organization::class, function (Faker\Generator $faker) {
     return [
+        'uuid'    => Uuid::uuid4()->toString(),
         'name'    => $faker->streetName,
         'address' => $faker->address,
         'phone'   => $faker->phoneNumber,

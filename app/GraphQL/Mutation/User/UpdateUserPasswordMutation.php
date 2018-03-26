@@ -1,16 +1,17 @@
 <?php
 
-namespace App\GraphQL\Mutation;
+namespace App\GraphQL\Mutation\User;
 
 use App\Models\User;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
+use Illuminate\Support\Facades\Hash;
 
-class UpdateUserEmailMutation extends Mutation
+class UpdateUserPasswordMutation extends Mutation
 {
     protected $attributes = [
-        'name' => 'UpdateUserEmail',
+        'name' => 'updateUserPassword',
     ];
 
     public function type()
@@ -21,16 +22,8 @@ class UpdateUserEmailMutation extends Mutation
     public function args()
     {
         return [
-            'id'    => ['name' => 'id', 'type' => Type::string()],
-            'email' => ['name' => 'email', 'type' => Type::string()],
-        ];
-    }
-
-    public function rules()
-    {
-        return [
-            'id'    => ['required'],
-            'email' => ['required', 'email'],
+            'id'       => ['name' => 'id', 'type' => Type::nonNull(Type::string())],
+            'password' => ['name' => 'password', 'type' => Type::nonNull(Type::string())],
         ];
     }
 
@@ -42,7 +35,7 @@ class UpdateUserEmailMutation extends Mutation
             return null;
         }
 
-        $user->email = $args['email'];
+        $user->password = Hash::make($args['password']);
         $user->save();
 
         return $user;

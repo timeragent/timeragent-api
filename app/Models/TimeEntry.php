@@ -4,6 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\TimeEntry
+ *
+ * @property-read \App\Models\Task $task
+ * @mixin \Eloquent
+ */
 class TimeEntry extends Model
 {
     protected $table = 'time_entries';

@@ -2,10 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Mpociot\Teamwork\TeamworkTeam;
 
-class Team extends TeamworkTeam
+/**
+ * App\Models\Team
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Team iManage($user_id = null)
+ * @mixin \Eloquent
+ */
+class Team extends Model
 {
     protected $fillable = [
         'name',

@@ -4,6 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Project
+ *
+ * @property-read \App\Models\Client                                          $client
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Task[] $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Team[] $teams
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $usersWithoutTeam
+ * @mixin \Eloquent
+ */
 class Project extends Model
 {
     protected $fillable = ['name', 'owner_id', 'client_id'];
@@ -27,12 +37,12 @@ class Project extends Model
         return $this;
     }
 
-    public function usersWithTeam($team_id)
+    public function usersWithTeam()
     {
-        return $this->belongsToMany(User::class, 'project_user', 'project_id', 'user_id')
-                    ->wherePivot('team_id', $team_id)
-                    ->withPivot('billable_rate', 'cost_rate', 'team_id')
-                    ->withTimestamps();
+//        return $this->belongsToMany(User::class, 'project_user', 'project_id', 'user_id')
+//                    ->wherePivot('team_id', $team_id)
+//                    ->withPivot('billable_rate', 'cost_rate', 'team_id')
+//                    ->withTimestamps();
     }
 
     public function usersWithoutTeam()
