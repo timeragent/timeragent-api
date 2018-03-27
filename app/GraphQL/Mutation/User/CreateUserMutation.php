@@ -5,7 +5,7 @@ namespace App\GraphQL\Mutation\User;
 use App\Models\User;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL;
-use Hash;
+use \Illuminate\Support\Facades\Hash;
 
 class CreateUserMutation extends Mutation
 {

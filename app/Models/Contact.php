@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * App\Models\Contact
  *
  * @mixin \Eloquent
  */
-class Contact extends Model
+class Contact extends BaseModel
 {
     protected $fillable = [
         'first_name',

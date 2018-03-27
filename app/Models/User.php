@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\HasApiTokens;
@@ -50,7 +49,7 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereVerified($value)
  */
-class User extends Model implements AuthenticatableContract, AuthorizableContract
+class User extends BaseModel implements AuthenticatableContract, AuthorizableContract
 {
     // use HasApiTokens, Notifiable, UserHasTeams, UserVerification;
     use Authenticatable, Authorizable, SoftDeletes, HasApiTokens;

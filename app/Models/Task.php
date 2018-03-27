@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * App\Models\Task
  *
@@ -11,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\TimeEntry[] $timeEntries
  * @mixin \Eloquent
  */
-class Task extends Model
+class Task extends BaseModel
 {
     protected $fillable = [
         'description',

@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * App\Models\TasksDuration
  *
  * @property-read \App\Models\Task $task
  * @mixin \Eloquent
  */
-class TasksDuration extends Model
+class TasksDuration extends BaseModel
 {
     protected $table = 'tasks_duration';
 

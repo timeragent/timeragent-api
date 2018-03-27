@@ -22,14 +22,14 @@ class UpdateUserPasswordMutation extends Mutation
     public function args()
     {
         return [
-            'id'       => ['name' => 'id', 'type' => Type::nonNull(Type::string())],
+            'uuid'     => ['name' => 'uuid', 'type' => Type::nonNull(Type::string())],
             'password' => ['name' => 'password', 'type' => Type::nonNull(Type::string())],
         ];
     }
 
     public function resolve($root, $args)
     {
-        $user = User::find($args['id']);
+        $user = User::find($args['uuid']);
 
         if ( ! $user) {
             return null;

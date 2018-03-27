@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * App\Models\Client
  *
@@ -12,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Project[] $projects
  * @mixin \Eloquent
  */
-class Client extends Model
+class Client extends BaseModel
 {
     protected $fillable = [
         'organization_id',

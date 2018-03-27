@@ -21,7 +21,7 @@ class UpdateUserEmailMutation extends Mutation
     public function args()
     {
         return [
-            'id'    => ['name' => 'id', 'type' => Type::string()],
+            'uuid'  => ['name' => 'uuid', 'type' => Type::string()],
             'email' => ['name' => 'email', 'type' => Type::string()],
         ];
     }
@@ -29,14 +29,14 @@ class UpdateUserEmailMutation extends Mutation
     public function rules()
     {
         return [
-            'id'    => ['required'],
+            'uuid'  => ['required'],
             'email' => ['required', 'email'],
         ];
     }
 
     public function resolve($root, $args)
     {
-        $user = User::find($args['id']);
+        $user = User::find($args['uuid']);
 
         if ( ! $user) {
             return null;

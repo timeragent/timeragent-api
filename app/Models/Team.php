@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -12,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Team iManage($user_id = null)
  * @mixin \Eloquent
  */
-class Team extends Model
+class Team extends BaseModel
 {
     protected $fillable = [
         'name',

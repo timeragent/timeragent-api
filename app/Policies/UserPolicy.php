@@ -32,7 +32,7 @@ class UserPolicy
      */
     public function show(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id;
+        return $currentUser->uuid === $user->uuid;
     }
 
     /**
@@ -45,7 +45,7 @@ class UserPolicy
      */
     public function update(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id;
+        return $currentUser->uuid === $user->uuid;
     }
 
     /**
@@ -58,6 +58,6 @@ class UserPolicy
      */
     public function destroy(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id;
+        return $currentUser->uuid === $user->uuid;
     }
 }
