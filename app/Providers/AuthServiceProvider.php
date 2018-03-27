@@ -35,18 +35,20 @@ class AuthServiceProvider extends ServiceProvider
             if ($request->input('api_token')) {
                 return User::where('api_token', $request->input('api_token'))->first();
             }
-        });
+        }
+        );
 
         Passport::tokensCan(
             [
-                'admin'        => 'Admin user scope',
-                'basic'        => 'Basic user scope',
-                'users'        => 'Users scope',
-                'users:list'   => 'Users scope',
-                'users:read'   => 'Users scope for reading records',
-                'users:write'  => 'Users scope for writing records',
-                'users:create' => 'Users scope for creating records',
-                'users:delete' => 'Users scope for deleting records',
+                'admin'                => 'Admin user scope',
+                'basic'                => 'Basic user scope',
+                'users'                => 'Users scope',
+                'users:list'           => 'Users scope',
+                'users:read'           => 'Users scope for reading records',
+                'users:write'          => 'Users scope for writing records',
+                'users:create'         => 'Users scope for creating records',
+                'users:delete'         => 'Users scope for deleting records',
+                'organizations:create' => 'Users scope for creating organizations',
             ]
         );
         // Register all policies here

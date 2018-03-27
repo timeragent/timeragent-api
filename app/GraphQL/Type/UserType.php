@@ -4,6 +4,7 @@ namespace App\GraphQL\Type;
 
 use App\Models\User;
 use Folklore\GraphQL\Support\Type as GraphQLType;
+use GraphQL;
 use GraphQL\Type\Definition\Type;
 
 class UserType extends GraphQLType
@@ -22,7 +23,7 @@ class UserType extends GraphQLType
     public function fields()
     {
         return [
-            'uuid'        => [
+            'uuid'          => [
                 'type'        => Type::nonNull(Type::string()),
                 'description' => 'The uuid of the user',
             ],
@@ -30,21 +31,25 @@ class UserType extends GraphQLType
                 'type'        => Type::string(),
                 'description' => 'The email of user',
             ],
-            'first_name'  => [
+            'first_name'    => [
                 'type'        => Type::string(),
                 'description' => 'The first name of user',
             ],
-            'last_name'   => [
+            'last_name'     => [
                 'type'        => Type::string(),
                 'description' => 'The last name of user',
             ],
-            'middle_name' => [
+            'middle_name'   => [
                 'type'        => Type::string(),
                 'description' => 'The middle name of user',
             ],
-            'name'        => [
+            'name'          => [
                 'type'        => Type::string(),
                 'description' => 'The name of user',
+            ],
+            'organizations' => [
+                'type'        => Type::listOf(GraphQL::type('Organization')),
+                'description' => 'Organizations owned by user',
             ],
         ];
     }

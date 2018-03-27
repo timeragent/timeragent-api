@@ -1,5 +1,7 @@
 <?php
 
+use Laravel\Passport\Passport;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 try {
@@ -100,6 +102,7 @@ $providers = [
     'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // TODO: Add check for local environment
 ];
 
+Passport::$runsMigrations = false;
 foreach ($providers as $provider) {
     if (class_exists($provider)) {
         $app->register($provider);

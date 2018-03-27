@@ -42,10 +42,10 @@ class CreateOrganizationMutation extends Mutation
 
     public function resolve($root, $args, $context, ResolveInfo $info)
     {
-        // $user = app('auth')->guard('api')->user();
-        if (Gate::denies('create-organization')) {
-            throw new AccessDeniedHttpException('You don\'t have permissions to complete this operation.');
-        }
+        $user = app('auth')->guard('api')->user();
+//        if (Gate::denies('organizations:create')) {
+//            throw new AccessDeniedHttpException('You don\'t have permissions to complete this operation.');
+//        }
 
         $params = collect($args['organization'])
             ->only(
@@ -60,6 +60,9 @@ class CreateOrganizationMutation extends Mutation
             )
             ->toArray();
 
-        return Organization::create($params);
+        $organization = Organization::create($params);
+        $organization->owners()->attach($user->uuid, ['status' => 1]);
+
+        return $organization;
     }
 }

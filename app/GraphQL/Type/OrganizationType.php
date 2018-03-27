@@ -3,6 +3,7 @@
 namespace App\GraphQL\Type;
 
 use Folklore\GraphQL\Support\Type as GraphQLType;
+use GraphQL;
 use GraphQL\Type\Definition\Type;
 
 class OrganizationType extends GraphQLType
@@ -18,6 +19,9 @@ class OrganizationType extends GraphQLType
     */
     // protected $inputObject = true;
 
+    /**
+     * @return array
+     */
     public function fields()
     {
         return [
@@ -44,6 +48,10 @@ class OrganizationType extends GraphQLType
             'website' => [
                 'type'        => Type::string(),
                 'description' => 'The website',
+            ],
+            'owners'  => [
+                'type'        => Type::listOf(GraphQL::type('User')),
+                'description' => 'Owners list',
             ],
         ];
     }
