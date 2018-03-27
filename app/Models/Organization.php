@@ -34,12 +34,19 @@ use Illuminate\Database\Eloquent\Model;
 class Organization extends Model
 {
     protected $fillable = [
+        'uuid',
         'name',
         'email',
         'phone',
         'address',
         'website',
     ];
+
+    public function owners()
+    {
+        return $this->belongsToMany(User::class)
+                    ->where('status', '=', 1);
+    }
 
     public function users()
     {

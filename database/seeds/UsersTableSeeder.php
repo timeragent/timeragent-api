@@ -13,6 +13,14 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         \DB::table('users')->delete();
+        factory(User::class)->create(
+            [
+                'first_name' => 'TimerAgent',
+                'last_name'  => 'Admin',
+                'email'      => 'serhii@digitalidea.studio',
+                'password'   => Hash::make('TimerAgent1!'),
+            ]
+        );
         factory(User::class, 500)->create();
     }
 }

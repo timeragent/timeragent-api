@@ -71,6 +71,10 @@ $app->routeMiddleware(
     ]
 );
 
+$app->configure('auth');
+$app->configure('graphql');
+$app->configure('cors');
+
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -82,8 +86,6 @@ $app->routeMiddleware(
 |
 */
 
-$app->configure('graphql');
-
 $providers = [
     'App\Providers\AppServiceProvider',
     'App\Providers\AuthServiceProvider',
@@ -93,6 +95,8 @@ $providers = [
     'Vluzrmos\Tinker\TinkerServiceProvider',
     'Folklore\GraphQL\LumenServiceProvider',
     'Laravel\Passport\PassportServiceProvider',
+    'Dusterio\LumenPassport\PassportServiceProvider',
+    'Barryvdh\Cors\LumenServiceProvider',
     'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // TODO: Add check for local environment
 ];
 

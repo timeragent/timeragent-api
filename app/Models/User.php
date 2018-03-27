@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\HasApiTokens;
 
-//use Mpociot\Teamwork\Traits\UserHasTeams;
 //use Jrean\UserVerification\Traits\VerifiesUsers;
 //use Jrean\UserVerification\Traits\UserVerification;
 

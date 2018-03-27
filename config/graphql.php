@@ -1,7 +1,9 @@
 <?php
 
 
+use App\GraphQL\InputTypes\OrganizationInputType;
 use App\GraphQL\InputTypes\UserInputType;
+use App\GraphQL\Mutation\Organization\CreateOrganizationMutation;
 use App\GraphQL\Mutation\User\CreateUserMutation;
 use App\GraphQL\Mutation\User\UpdateUserEmailMutation;
 use App\GraphQL\Mutation\User\UpdateUserPasswordMutation;
@@ -67,7 +69,9 @@ return [
     /*
      * Any middleware for the 'graphql' route group
      */
-    'middleware'            => [],
+    'middleware'            => [
+        'auth:api',
+    ],
 
     /**
      * Any middleware for a specific 'graphql' schema
@@ -140,6 +144,7 @@ return [
                 'createUser'         => CreateUserMutation::class,
                 'updateUserEmail'    => UpdateUserEmailMutation::class,
                 'updateUserPassword' => UpdateUserPasswordMutation::class,
+                'createOrganization' => CreateOrganizationMutation::class,
             ],
         ],
         'secret'  => [
@@ -204,11 +209,12 @@ return [
      */
     'types'                 => [
         // Generic Types
-        'User'         => UserType::class,
-        'Organization' => OrganizationType::class,
+        'User'              => UserType::class,
+        'Organization'      => OrganizationType::class,
 
         // Input Types
-        'UserInput'    => UserInputType::class,
+        'UserInput'         => UserInputType::class,
+        'OrganizationInput' => OrganizationInputType::class,
     ],
 
     /*
