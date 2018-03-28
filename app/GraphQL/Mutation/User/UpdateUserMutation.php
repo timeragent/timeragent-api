@@ -63,7 +63,7 @@ class UpdateUserMutation extends Mutation
         ];
     }
 
-    public function resolve($root, $args)
+    public function resolve($root, $args): User
     {
         $user = app('auth')->guard('api')->user();
 
@@ -71,7 +71,7 @@ class UpdateUserMutation extends Mutation
             throw new AccessDeniedHttpException('You don\'t have permissions to complete this operation.');
         }
 
-        $targetUser = User::whereUuid($args['uuid']);
+        $targetUser = User::whereUuid($args['uuid'])->first();
 
         $params = collect($args['user'])
             ->only(
@@ -88,6 +88,8 @@ class UpdateUserMutation extends Mutation
             $params['password'] = Hash::make($args['password']);
         }
 
-        return $targetUser->update($params);
+        $targetUser->update($params);
+
+        return $targetUser->fresh();
     }
 }
