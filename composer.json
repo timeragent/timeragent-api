@@ -41,6 +41,7 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "generate-schemadoc": [
+            "rm -rf ./public/schema",
             "NODE_TLS_REJECT_UNAUTHORIZED=0 graphdoc -e https://timeragent-api.test/graphql -o ./public/schema -f",
             "open https://timeragent-api.test/schema"
         ]

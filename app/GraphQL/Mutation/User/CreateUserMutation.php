@@ -3,6 +3,7 @@
 namespace App\GraphQL\Mutation\User;
 
 use App\Models\User;
+use App\Validation\Rules\Unique;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL;
 use \Illuminate\Support\Facades\Hash;
@@ -36,7 +37,7 @@ class CreateUserMutation extends Mutation
             'user.email'      => [
                 'required',
                 'email',
-                // Rule::unique('users'),
+                new Unique('users', 'email'),
             ],
             'user.password'   => [
                 'required',

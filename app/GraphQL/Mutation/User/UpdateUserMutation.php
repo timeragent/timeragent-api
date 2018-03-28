@@ -3,6 +3,7 @@
 namespace App\GraphQL\Mutation\User;
 
 use App\Models\User;
+use App\Validation\Rules\Unique;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL;
 use Illuminate\Support\Facades\Gate;
@@ -40,10 +41,16 @@ class UpdateUserMutation extends Mutation
             'user.email'      => [
                 'required',
                 'email',
-                // Rule::unique('users')->ignore(),
+                (new Unique('users', 'email'))
+                    ->ignore(
+                        array_get(
+                            app('request')->all(),
+                            'variables.uuid'
+                        ),
+                        'uuid'
+                    ),
             ],
             'user.password'   => [
-                'required',
                 'min:6',
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/',
             ],
