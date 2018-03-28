@@ -43,9 +43,6 @@ class CreateOrganizationMutation extends Mutation
     public function resolve($root, $args, $context, ResolveInfo $info)
     {
         $user = app('auth')->guard('api')->user();
-//        if (Gate::denies('organizations:create')) {
-//            throw new AccessDeniedHttpException('You don\'t have permissions to complete this operation.');
-//        }
 
         $params = collect($args['organization'])
             ->only(

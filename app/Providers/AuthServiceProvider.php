@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Organization;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 
@@ -35,6 +37,20 @@ class AuthServiceProvider extends ServiceProvider
             if ($request->input('api_token')) {
                 return User::where('api_token', $request->input('api_token'))->first();
             }
+        }
+        );
+
+        // Organization owner can update his organization
+        Gate::define(
+            'update_organization', function (User $user, Organization $organization) {
+            return $organization->owners()->has($user);
+        }
+        );
+
+        // User can update his profile
+        Gate::define(
+            'update_user', function (User $user, User $targetUser) {
+            return $targetUser->uuid === $user->uuid;
         }
         );
 

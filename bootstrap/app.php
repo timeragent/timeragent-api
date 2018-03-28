@@ -64,6 +64,7 @@ $app->singleton(
 $app->middleware(
     [
         App\Http\Middleware\ThrottleRequests::class,
+        \Barryvdh\Cors\HandleCors::class,
     ]
 );
 

@@ -6,6 +6,7 @@ use App\GraphQL\InputTypes\UserInputType;
 use App\GraphQL\Mutation\Organization\CreateOrganizationMutation;
 use App\GraphQL\Mutation\User\CreateUserMutation;
 use App\GraphQL\Mutation\User\UpdateUserEmailMutation;
+use App\GraphQL\Mutation\User\UpdateUserMutation;
 use App\GraphQL\Mutation\User\UpdateUserPasswordMutation;
 use App\GraphQL\Query\Organization\OrganizationQuery;
 use App\GraphQL\Query\User\UsersQuery;
@@ -142,8 +143,7 @@ return [
             ],
             'mutation' => [
                 'createUser'         => CreateUserMutation::class,
-                'updateUserEmail'    => UpdateUserEmailMutation::class,
-                'updateUserPassword' => UpdateUserPasswordMutation::class,
+                'updateUser'         => UpdateUserMutation::class,
                 'createOrganization' => CreateOrganizationMutation::class,
             ],
         ],
