@@ -18,7 +18,7 @@ class UserInputType extends InputType
     {
         return [
             'uuid'        => [
-                'type'        => Type::nonNull(Type::string()),
+                'type'        => Type::string(),
                 'description' => 'The uuid of the user',
             ],
             'email'       => [

@@ -8,11 +8,12 @@ use GraphQL;
 use Illuminate\Support\Facades\Gate;
 use \Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use GraphQL\Type\Definition\Type;
 
 class UpdateUserMutation extends Mutation
 {
     protected $attributes = [
-        'name' => 'UpdateUserMutation',
+        'name' => 'updateUser',
     ];
 
     public function type()
@@ -23,6 +24,7 @@ class UpdateUserMutation extends Mutation
     public function args()
     {
         return [
+            'uuid' => ['name' => 'uuid', 'type' => Type::string()],
             'user' => ['name' => 'user', 'type' => GraphQL::type('UserInput')],
         ];
     }
@@ -30,18 +32,27 @@ class UpdateUserMutation extends Mutation
     public function rules()
     {
         return [
-            'user.uuid'       => [
+            'uuid'            => [
                 'required',
                 'regex:/^[a-f0-9]{8}\-[a-f0-9]{4}\-4[a-f0-9]{3}\-(8|9|a|b)[a-f0-9]{3}\-[a-f0-9]{12}$/i',
+                'exists:users,uuid',
             ],
-            'user.email'      => ['required', 'email'],
+            'user.email'      => [
+                'required',
+                'email',
+                // Rule::unique('users')->ignore(),
+            ],
             'user.password'   => [
                 'required',
                 'min:6',
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/',
             ],
-            'user.first_name' => ['required'],
-            'user.last_name'  => ['required'],
+            'user.first_name' => [
+                'required',
+            ],
+            'user.last_name'  => [
+                'required',
+            ],
         ];
     }
 
@@ -53,12 +64,12 @@ class UpdateUserMutation extends Mutation
             throw new AccessDeniedHttpException('You don\'t have permissions to complete this operation.');
         }
 
+        $targetUser = User::whereUuid($args['uuid']);
+
         $params = collect($args['user'])
             ->only(
                 [
-                    'uuid',
                     'email',
-                    'password',
                     'first_name',
                     'last_name',
                     'middle_name',
@@ -66,8 +77,10 @@ class UpdateUserMutation extends Mutation
             )
             ->toArray();
 
-        $params['password'] = Hash::make($params['password']);
+        if (isset($args['password'])) {
+            $params['password'] = Hash::make($args['password']);
+        }
 
-        return User::update($params);
+        return $targetUser->update($params);
     }
 }

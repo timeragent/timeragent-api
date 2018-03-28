@@ -6,11 +6,12 @@ use App\Models\User;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL;
 use \Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class CreateUserMutation extends Mutation
 {
     protected $attributes = [
-        'name' => 'CreateUserMutation',
+        'name' => 'createUser',
     ];
 
     public function type()
@@ -32,7 +33,11 @@ class CreateUserMutation extends Mutation
                 'required',
                 'regex:/^[a-f0-9]{8}\-[a-f0-9]{4}\-4[a-f0-9]{3}\-(8|9|a|b)[a-f0-9]{3}\-[a-f0-9]{12}$/i',
             ],
-            'user.email'      => ['required', 'email'],
+            'user.email'      => [
+                'required',
+                'email',
+                // Rule::unique('users'),
+            ],
             'user.password'   => [
                 'required',
                 'min:6',

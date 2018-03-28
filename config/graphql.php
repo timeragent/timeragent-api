@@ -147,16 +147,6 @@ return [
                 'createOrganization' => CreateOrganizationMutation::class,
             ],
         ],
-        'secret'  => [
-            'query'    => [
-                'users'         => UsersQuery::class,
-                'organizations' => OrganizationQuery::class,
-            ],
-            'mutation' => [
-                'updateUserEmail'    => UpdateUserEmailMutation::class,
-                'updateUserPassword' => UpdateUserPasswordMutation::class,
-            ],
-        ],
     ],
 
     /*
