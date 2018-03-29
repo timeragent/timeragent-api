@@ -42,7 +42,7 @@ class Organization extends BaseModel
 
     public function owners()
     {
-        return $this->belongsToMany(User::class)
+        return $this->users()
                     ->where('status', '=', 1);
     }
 

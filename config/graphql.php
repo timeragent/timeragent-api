@@ -4,6 +4,7 @@
 use App\GraphQL\InputTypes\OrganizationInputType;
 use App\GraphQL\InputTypes\UserInputType;
 use App\GraphQL\Mutation\Organization\CreateOrganizationMutation;
+use App\GraphQL\Mutation\Organization\UpdateOrganizationMutation;
 use App\GraphQL\Mutation\User\CreateUserMutation;
 use App\GraphQL\Mutation\User\UpdateUserMutation;
 use App\GraphQL\Query\Organization\OrganizationQuery;
@@ -135,15 +136,18 @@ return [
      */
     'schemas'               => [
         'default' => [
-            'query'    => [
-                'users'         => UsersQuery::class,
-                'organizations' => OrganizationQuery::class,
+            'query'        => [
+                UsersQuery::class,
+                OrganizationQuery::class,
             ],
-            'mutation' => [
-                'createUser'         => CreateUserMutation::class,
-                'updateUser'         => UpdateUserMutation::class,
-                'createOrganization' => CreateOrganizationMutation::class,
+            'mutation'     => [
+                CreateUserMutation::class,
+                UpdateUserMutation::class,
+                CreateOrganizationMutation::class,
+                UpdateOrganizationMutation::class,
             ],
+            'subscription' => [],
+            'types'        => [],
         ],
     ],
 
@@ -197,12 +201,12 @@ return [
      */
     'types'                 => [
         // Generic Types
-        'User'              => UserType::class,
-        'Organization'      => OrganizationType::class,
+        UserType::class,
+        OrganizationType::class,
 
         // Input Types
-        'UserInput'         => UserInputType::class,
-        'OrganizationInput' => OrganizationInputType::class,
+        UserInputType::class,
+        OrganizationInputType::class,
     ],
 
     /*

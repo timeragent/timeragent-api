@@ -43,7 +43,7 @@ class AuthServiceProvider extends ServiceProvider
         // Organization owner can update his organization
         Gate::define(
             'update_organization', function (User $user, Organization $organization) {
-            return $organization->owners()->has($user);
+            return (bool)$organization->owners()->whereUuid($user->uuid)->count();
         }
         );
 

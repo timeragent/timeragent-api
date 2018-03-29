@@ -7,7 +7,6 @@ use App\Validation\Rules\Unique;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL;
 use \Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 
 class CreateUserMutation extends Mutation
 {

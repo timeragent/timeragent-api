@@ -6,13 +6,11 @@ use App\Models\Organization;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL;
-use Illuminate\Support\Facades\Gate;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class CreateOrganizationMutation extends Mutation
 {
     protected $attributes = [
-        'name'        => 'CreateOrganizationMutation',
+        'name'        => 'createOrganization',
         'description' => 'A mutation',
     ];
 

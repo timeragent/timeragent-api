@@ -16,13 +16,9 @@ class UserInputType extends InputType
 
     public function fields()
     {
-        $uuidType = app('request')->get('operationName') === 'updateUser'
-            ? Type::string()
-            : Type::nonNull(Type::string());
-
         return [
             'uuid'        => [
-                'type'        => $uuidType,
+                'type'        => Type::nonNull(Type::string()),
                 'description' => 'The uuid of the user',
             ],
             'email'       => [

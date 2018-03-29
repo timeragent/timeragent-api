@@ -4,12 +4,14 @@ namespace App\GraphQL\Mutation\User;
 
 use App\Models\User;
 use App\Validation\Rules\Unique;
+use App\Validation\Rules\Uuid;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL;
 use Illuminate\Support\Facades\Gate;
 use \Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use GraphQL\Type\Definition\Type;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UpdateUserMutation extends Mutation
 {
@@ -25,17 +27,23 @@ class UpdateUserMutation extends Mutation
     public function args()
     {
         return [
-            'uuid' => ['name' => 'uuid', 'type' => Type::string()],
-            'user' => ['name' => 'user', 'type' => GraphQL::type('UserInput')],
+            'uuid' => [
+                'name' => 'uuid',
+                'type' => Type::string(),
+            ],
+            'user' => [
+                'name' => 'user',
+                'type' => GraphQL::type('UserInput'),
+            ],
         ];
     }
 
     public function rules()
     {
         return [
-            'uuid'            => [
+            'user.uuid'       => [
                 'required',
-                'regex:/^[a-f0-9]{8}\-[a-f0-9]{4}\-4[a-f0-9]{3}\-(8|9|a|b)[a-f0-9]{3}\-[a-f0-9]{12}$/i',
+                new Uuid(),
                 'exists:users,uuid',
             ],
             'user.email'      => [
@@ -71,9 +79,10 @@ class UpdateUserMutation extends Mutation
             throw new AccessDeniedHttpException('You don\'t have permissions to complete this operation.');
         }
 
-        $targetUser = User::whereUuid($args['uuid'])->first();
+        $params     = collect($args['user']);
+        $targetUser = User::whereUuid($params->get('uuid'))->first();
 
-        $params = collect($args['user'])
+        $filteredParams = $params
             ->only(
                 [
                     'email',
@@ -84,11 +93,11 @@ class UpdateUserMutation extends Mutation
             )
             ->toArray();
 
-        if (isset($args['password'])) {
-            $params['password'] = Hash::make($args['password']);
+        if ( ! empty($filteredParams['password'])) {
+            $filteredParams['password'] = Hash::make($filteredParams['password']);
         }
 
-        $targetUser->update($params);
+        $targetUser->update($filteredParams);
 
         return $targetUser->fresh();
     }
