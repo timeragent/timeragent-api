@@ -74,9 +74,12 @@ $app->routeMiddleware(
     ]
 );
 
+$app->configure('app');
 $app->configure('auth');
 $app->configure('graphql');
 $app->configure('cors');
+$app->configure('queue');
+$app->configure('mail');
 
 /*
 |--------------------------------------------------------------------------
@@ -100,6 +103,7 @@ $providers = [
     'Laravel\Passport\PassportServiceProvider',
     'Dusterio\LumenPassport\PassportServiceProvider',
     'Barryvdh\Cors\LumenServiceProvider',
+    'Illuminate\Mail\MailServiceProvider',
     'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider', // TODO: Add check for local environment
 ];
 

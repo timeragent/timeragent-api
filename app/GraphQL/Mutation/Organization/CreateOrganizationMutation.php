@@ -6,6 +6,8 @@ use App\Models\Organization;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class CreateOrganizationMutation extends Mutation
 {
@@ -40,22 +42,27 @@ class CreateOrganizationMutation extends Mutation
 
     public function resolve($root, $args, $context, ResolveInfo $info)
     {
+        $params = collect($args['organization']);
+
+        if (Gate::denies('create_organization')) {
+            throw new AccessDeniedHttpException('You don\'t have permissions to complete this operation.');
+        }
+
         $user = app('auth')->guard('api')->user();
 
-        $params = collect($args['organization'])
-            ->only(
-                [
-                    'uuid',
-                    'email',
-                    'name',
-                    'address',
-                    'phone',
-                    'website',
-                ]
-            )
-            ->toArray();
+        $filteredParams = $params->only(
+            [
+                'uuid',
+                'email',
+                'name',
+                'address',
+                'phone',
+                'website',
+            ]
+        )
+                                 ->toArray();
 
-        $organization = Organization::create($params);
+        $organization = Organization::create($filteredParams);
         $organization->owners()->attach($user->uuid, ['status' => 1]);
 
         return $organization;

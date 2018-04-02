@@ -4,6 +4,7 @@ namespace App\GraphQL\InputTypes;
 
 use Folklore\GraphQL\Support\InputType;
 use GraphQL\Type\Definition\Type;
+use GraphQL;
 
 class OrganizationInputType extends InputType
 {
@@ -40,6 +41,10 @@ class OrganizationInputType extends InputType
             'website' => [
                 'type'        => Type::string(),
                 'description' => 'The website of organization',
+            ],
+            'owners'  => [
+                'type'        => Type::listOf(Type::string()),
+                'description' => 'Organization owners',
             ],
         ];
     }

@@ -14,19 +14,20 @@
 use App\Models\Organization;
 use App\Models\User;
 use Ramsey\Uuid\Uuid;
+use \Illuminate\Support\Facades\Hash;
 
 $factory->define(
     User::class, function (Faker\Generator $faker) {
     return [
-        'uuid'           => Uuid::uuid4()->toString(),
-        'first_name'     => $faker->firstName,
-        'last_name'      => $faker->lastName,
-        'middle_name'    => null,
-        'email'          => $faker->email,
-        'password'       => $faker->password,
-        'verified'       => $faker->boolean,
-        'remember_token' => $faker->password(100, 100),
-        'created_at'     => $faker->dateTime,
+        'uuid'               => Uuid::uuid4()->toString(),
+        'first_name'         => $faker->firstName,
+        'last_name'          => $faker->lastName,
+        'middle_name'        => null,
+        'email'              => $faker->email,
+        'password'           => Hash::make($faker->password),
+        'verification_token' => $faker->boolean,
+        'remember_token'     => $faker->password(100, 100),
+        'created_at'         => $faker->dateTime,
     ];
 }
 );

@@ -1,7 +1,6 @@
 <?php
 
 use Laravel\Lumen\Routing\Router;
-use Ramsey\Uuid\Uuid;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,13 +17,3 @@ use Ramsey\Uuid\Uuid;
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
-
-// Generate random string
-$router->get(
-    'appKey', function () {
-    return Uuid::uuid4()->toString();
-}
-);
-
-// route for creating access_token
-$router->post('accessToken', 'AccessTokenController@createAccessToken');

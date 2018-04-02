@@ -4,6 +4,7 @@ namespace App\GraphQL\Mutation\User;
 
 use App\Models\User;
 use App\Validation\Rules\Unique;
+use App\Validation\Rules\Uuid;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL;
 use \Illuminate\Support\Facades\Hash;
@@ -31,7 +32,7 @@ class CreateUserMutation extends Mutation
         return [
             'user.uuid'       => [
                 'required',
-                'regex:/^[a-f0-9]{8}\-[a-f0-9]{4}\-4[a-f0-9]{3}\-(8|9|a|b)[a-f0-9]{3}\-[a-f0-9]{12}$/i',
+                new Uuid(),
             ],
             'user.email'      => [
                 'required',
@@ -63,8 +64,21 @@ class CreateUserMutation extends Mutation
             )
             ->toArray();
 
-        $params['password'] = Hash::make($params['password']);
+        $params['password']           = Hash::make($params['password']);
+        $params['verification_token'] = $this->generateUserToken($params['uuid']);
 
         return User::create($params);
+    }
+
+    /**
+     * Generate the verification token.
+     *
+     * @param string $uuid
+     *
+     * @return string|bool
+     */
+    protected function generateUserToken(string $uuid)
+    {
+        return hash_hmac('sha256', $uuid, env('APP_KEY'));
     }
 }

@@ -40,10 +40,17 @@ class AuthServiceProvider extends ServiceProvider
         }
         );
 
+        // Verified user can create organization
+        Gate::define(
+            'create_organization', function (User $user) {
+            return $user->verified;
+        }
+        );
+
         // Organization owner can update his organization
         Gate::define(
             'update_organization', function (User $user, Organization $organization) {
-            return (bool)$organization->owners()->whereUuid($user->uuid)->count();
+            return $user->verified && (bool)$organization->owners()->whereUuid($user->uuid)->count();
         }
         );
 

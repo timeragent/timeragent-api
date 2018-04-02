@@ -5,18 +5,18 @@ namespace App\GraphQL\Mutation\User;
 use App\Models\User;
 use App\Validation\Rules\Unique;
 use App\Validation\Rules\Uuid;
+use App\Validation\Rules\Verifies;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL;
 use Illuminate\Support\Facades\Gate;
 use \Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use GraphQL\Type\Definition\Type;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class UpdateUserMutation extends Mutation
+class VerifyUserMutation extends Mutation
 {
     protected $attributes = [
-        'name' => 'updateUser',
+        'name' => 'verifyUser',
     ];
 
     public function type()
@@ -27,9 +27,13 @@ class UpdateUserMutation extends Mutation
     public function args()
     {
         return [
-            'user' => [
-                'name' => 'user',
-                'type' => GraphQL::type('UserInput'),
+            'verification_code' => [
+                'name' => 'verification_code',
+                'type' => Type::string(),
+            ],
+            'uuid'              => [
+                'name' => 'uuid',
+                'type' => Type::string(),
             ],
         ];
     }
@@ -37,32 +41,14 @@ class UpdateUserMutation extends Mutation
     public function rules()
     {
         return [
-            'user.uuid'       => [
+            'verification_code' => [
+                'required',
+                new Verifies(),
+            ],
+            'uuid'              => [
                 'required',
                 new Uuid(),
                 'exists:users,uuid',
-            ],
-            'user.email'      => [
-                'required',
-                'email',
-                (new Unique('users', 'email'))
-                    ->ignore(
-                        array_get(
-                            app('request')->all(),
-                            'variables.uuid'
-                        ),
-                        'uuid'
-                    ),
-            ],
-            'user.password'   => [
-                'min:6',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/',
-            ],
-            'user.first_name' => [
-                'required',
-            ],
-            'user.last_name'  => [
-                'required',
             ],
         ];
     }

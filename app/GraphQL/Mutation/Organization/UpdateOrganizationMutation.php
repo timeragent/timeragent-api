@@ -8,10 +8,8 @@ use App\Validation\Rules\Uuid;
 use Folklore\GraphQL\Support\Mutation;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL;
-use GraphQL\Type\Definition\Type;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UpdateOrganizationMutation extends Mutation
 {

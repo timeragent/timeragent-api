@@ -1,12 +1,12 @@
 <?php
 
-
 use App\GraphQL\InputTypes\OrganizationInputType;
 use App\GraphQL\InputTypes\UserInputType;
 use App\GraphQL\Mutation\Organization\CreateOrganizationMutation;
 use App\GraphQL\Mutation\Organization\UpdateOrganizationMutation;
 use App\GraphQL\Mutation\User\CreateUserMutation;
 use App\GraphQL\Mutation\User\UpdateUserMutation;
+use App\GraphQL\Mutation\User\VerifyUserMutation;
 use App\GraphQL\Query\Organization\OrganizationQuery;
 use App\GraphQL\Query\User\UsersQuery;
 use App\GraphQL\Type\OrganizationType;
@@ -17,12 +17,12 @@ return [
     /*
      * The prefix for routes
      */
-    'prefix'                => 'graphql',
+    'prefix'  => '',
 
     /*
      * The domain for routes
      */
-    'domain'                => env('APP_URL'),
+    'domain'  => env('API_URL'),
 
     /*
      * The routes to make GraphQL request. Either a string that will apply
@@ -134,7 +134,7 @@ return [
      *     ]
      * ]
      */
-    'schemas'               => [
+    'schemas' => [
         'default' => [
             'query'        => [
                 UsersQuery::class,
@@ -143,6 +143,8 @@ return [
             'mutation'     => [
                 CreateUserMutation::class,
                 UpdateUserMutation::class,
+                VerifyUserMutation::class,
+
                 CreateOrganizationMutation::class,
                 UpdateOrganizationMutation::class,
             ],

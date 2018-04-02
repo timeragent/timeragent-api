@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
+use App\Jobs\SendWelcomeEmail;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\HasApiTokens;
-
-//use Jrean\UserVerification\Traits\VerifiesUsers;
-//use Jrean\UserVerification\Traits\UserVerification;
+use Queue;
 
 /**
  * App\Models\User
@@ -70,6 +69,8 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'first_name',
         'last_name',
         'middle_name',
+        'verification_token',
+        'admin',
     ];
 
     /**
@@ -82,12 +83,29 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         'remember_token',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(
+            function (User $user) {
+                $user->generateToken();
+            }
+        );
+
+        static::created(
+            function (User $user) {
+                Queue::push(new SendWelcomeEmail($user));
+            }
+        );
+    }
+
     /**
      * @return bool
      */
     public function isAdmin()
     {
-        return (isset($this->role) ? $this->role : self::BASIC_ROLE) == self::ADMIN_ROLE;
+        return $this->admin;
     }
 
     public function projects()
@@ -110,5 +128,23 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+
+    // GETTERS
+    public function getNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
+    // HELPERS
+
+    /**
+     * Generate the verification token.
+     *
+     * @return string|bool
+     */
+    protected function generateToken()
+    {
+        return hash_hmac('sha256', $this->uuid, env('APP_KEY'));
     }
 }
