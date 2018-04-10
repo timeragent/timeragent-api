@@ -17,12 +17,12 @@ return [
     /*
      * The prefix for routes
      */
-    'prefix'  => '',
+    'prefix'                => '',
 
     /*
      * The domain for routes
      */
-    'domain'  => env('API_URL'),
+    'domain'                => env('API_URL'),
 
     /*
      * The routes to make GraphQL request. Either a string that will apply
@@ -77,7 +77,8 @@ return [
      * Any middleware for a specific 'graphql' schema
      */
     'middleware_schema'     => [
-        'default' => [],
+        'default' => 'check_verification',
+        // 'default' => 'check_verification|other_middleware|another_middleware:param1=value1:param2=value2',
     ],
 
     /*
@@ -134,7 +135,7 @@ return [
      *     ]
      * ]
      */
-    'schemas' => [
+    'schemas'               => [
         'default' => [
             'query'        => [
                 UsersQuery::class,

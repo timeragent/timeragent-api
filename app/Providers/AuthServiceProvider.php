@@ -33,25 +33,32 @@ class AuthServiceProvider extends ServiceProvider
         // the User instance via an API token or any other method necessary.
 
         $this->app['auth']->viaRequest(
-            'api', function ($request) {
-            if ($request->input('api_token')) {
-                return User::where('api_token', $request->input('api_token'))->first();
+            'api',
+            function (\Request $request) {
+                if ($request->input('api_token')) {
+                    return User::where('api_token', $request->input('api_token'))
+                               ->first();
+                }
             }
-        }
         );
 
         // Verified user can create organization
         Gate::define(
-            'create_organization', function (User $user) {
-            return $user->verified;
-        }
+            'create_organization',
+            function (User $user) {
+                return $user->verified;
+            }
         );
 
         // Organization owner can update his organization
         Gate::define(
-            'update_organization', function (User $user, Organization $organization) {
-            return $user->verified && (bool)$organization->owners()->whereUuid($user->uuid)->count();
-        }
+            'update_organization',
+            function (User $user, Organization $organization) {
+                return $user->verified &&
+                       (bool)$organization->owners()
+                                          ->whereUuid($user->uuid)
+                                          ->count();
+            }
         );
 
         // User can update his profile

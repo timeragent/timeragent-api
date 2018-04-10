@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Response;
 use Laravel\Lumen\Routing\Router;
 
 /*
@@ -17,10 +16,6 @@ use Laravel\Lumen\Routing\Router;
 /** @var Router $router */
 $router->get(
     '/', function () use ($router) {
-    return (new \Illuminate\Http\Response(
-        '', 302, [
-              'Location' => '/schema/index.html',
-          ]
-    ));
+    return redirect('/schema/index.html');
 }
 );

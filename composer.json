@@ -45,8 +45,8 @@
         ],
         "generate-schemadoc": [
             "rm -rf ./public/schema",
-            "NODE_TLS_REJECT_UNAUTHORIZED=0 graphdoc -e https://timeragent-api.test/graphql -o ./public/schema -f",
-            "open https://timeragent-api.test/schema/index.html"
+            "NODE_TLS_REJECT_UNAUTHORIZED=0 graphdoc -e https://api.timeragent.test -o ./public/schema -f",
+            "open https://api.timeragent.test"
         ]
     },
     "config": {
