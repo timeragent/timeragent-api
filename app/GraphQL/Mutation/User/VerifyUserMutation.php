@@ -45,10 +45,13 @@ class VerifyUserMutation extends Mutation
                 'required',
                 new Verifies(),
             ],
-            'uuid'              => [
+            'email'             => [
                 'required',
-                new Uuid(),
-                'exists:users,uuid',
+                'email',
+                'exists:users,email',
+            ],
+            'password'          => [
+                'required',
             ],
         ];
     }
