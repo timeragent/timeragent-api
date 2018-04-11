@@ -60,12 +60,22 @@ class VerifyUserMutation extends Mutation
         ];
     }
 
+    /**
+     * Resolves the mutation
+     *
+     * @param array $root Root component
+     * @param array $args Arguments
+     *
+     * @return User
+     */
     public function resolve($root, $args): User
     {
         $user = app('auth')->guard('api')->user();
 
         if (Gate::denies('update_user', $user)) {
-            throw new AccessDeniedHttpException('You don\'t have permissions to complete this operation.');
+            throw new AccessDeniedHttpException(
+                'You don\'t have permissions to complete this operation.'
+            );
         }
 
         $params     = collect($args['user']);
