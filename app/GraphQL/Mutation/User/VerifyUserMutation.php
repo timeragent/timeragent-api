@@ -31,8 +31,12 @@ class VerifyUserMutation extends Mutation
                 'name' => 'verification_code',
                 'type' => Type::string(),
             ],
-            'uuid'              => [
-                'name' => 'uuid',
+            'email'             => [
+                'name' => 'email',
+                'type' => Type::string(),
+            ],
+            'password'          => [
+                'name' => 'password',
                 'type' => Type::string(),
             ],
         ];
