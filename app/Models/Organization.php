@@ -31,6 +31,9 @@ namespace App\Models;
  */
 class Organization extends BaseModel
 {
+
+    const MORPH_NAME = 'organization';
+
     protected $fillable = [
         'uuid',
         'name',

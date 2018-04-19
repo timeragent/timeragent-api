@@ -55,6 +55,7 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     const ADMIN_ROLE = 'ADMIN_USER';
     const BASIC_ROLE = 'BASIC_USER';
+    const MORPH_NAME = 'user';
 
     /**
      * The attributes that are mass assignable.

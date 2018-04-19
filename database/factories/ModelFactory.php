@@ -13,6 +13,7 @@
 
 use App\Models\Organization;
 use App\Models\User;
+use App\Models\Team;
 use Ramsey\Uuid\Uuid;
 use \Illuminate\Support\Facades\Hash;
 
@@ -42,5 +43,26 @@ $factory->define(
         'email'   => $faker->email,
         'website' => $faker->domainName,
     ];
+}
+);
+
+$factory->define(
+    Team::class, function (Faker\Generator $faker) {
+        return [
+            'uuid' => Uuid::uuid4()->toString(),
+            'name' => $faker->company . ' team',
+            'owner_type' => $faker->randomElement([
+                User::MORPH_NAME,
+                Organization::MORPH_NAME,
+            ]),
+            'owner_uuid' => function($row) {
+                if ($row['owner_type'] === User::MORPH_NAME) {
+                    return factory(User::class)->create()->uuid;
+                } elseif ($row['owner_type'] === Organization::MORPH_NAME) {
+                    return factory(Organization::class)->create()->uuid;
+                }
+                throw new \InvalidArgumentException("Relation type {$row['owner_type']}  is not defined");
+            }
+        ];
 }
 );
