@@ -14,9 +14,10 @@ use Illuminate\Support\Facades\Auth;
 class Team extends BaseModel
 {
     protected $fillable = [
+        'uuid',
         'name',
-        'owner_id',
-        'organization_id',
+        'owner_type',
+        'owner_uuid',
     ];
 
     public function projects()
@@ -27,5 +28,16 @@ class Team extends BaseModel
     public function scopeIManage($query, $user_id = null)
     {
         return $query->where('owner_id', $user_id ?: Auth::id());
+    }
+
+    public function scopeGetTeams($query, $owner_type, $owner_uuid)
+    {
+        return $query->where('owner_type', $owner_type)
+            ->where('owner_uuid', $owner_uuid)->get();
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
     }
 }

@@ -2,15 +2,24 @@
 
 use App\GraphQL\InputTypes\OrganizationInputType;
 use App\GraphQL\InputTypes\UserInputType;
+use App\GraphQL\InputTypes\TeamInputType;
+
 use App\GraphQL\Mutation\Organization\CreateOrganizationMutation;
 use App\GraphQL\Mutation\Organization\UpdateOrganizationMutation;
 use App\GraphQL\Mutation\User\CreateUserMutation;
 use App\GraphQL\Mutation\User\UpdateUserMutation;
 use App\GraphQL\Mutation\User\VerifyUserMutation;
+use App\GraphQL\Mutation\Team\CreateTeamMutation;
+use App\GraphQL\Mutation\Team\UpdateTeamMutation;
+use App\GraphQL\Mutation\Team\DeleteTeamMutation;
+
 use App\GraphQL\Query\Organization\OrganizationQuery;
 use App\GraphQL\Query\User\UsersQuery;
+use App\GraphQL\Query\Team\TeamsQuery;
+
 use App\GraphQL\Type\OrganizationType;
 use App\GraphQL\Type\UserType;
+use App\GraphQL\Type\TeamType;
 
 return [
 
@@ -140,6 +149,7 @@ return [
             'query'        => [
                 UsersQuery::class,
                 OrganizationQuery::class,
+                TeamsQuery::class,
             ],
             'mutation'     => [
                 CreateUserMutation::class,
@@ -148,6 +158,10 @@ return [
 
                 CreateOrganizationMutation::class,
                 UpdateOrganizationMutation::class,
+
+                CreateTeamMutation::class,
+                UpdateTeamMutation::class,
+                DeleteTeamMutation::class,
             ],
             'subscription' => [],
             'types'        => [],
@@ -206,10 +220,12 @@ return [
         // Generic Types
         UserType::class,
         OrganizationType::class,
+        TeamType::class,
 
         // Input Types
         UserInputType::class,
         OrganizationInputType::class,
+        TeamInputType::class,
     ],
 
     /*

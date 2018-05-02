@@ -26,6 +26,8 @@ class UsersQuery extends Query
             'first_name'  => ['name' => 'first_name', 'type' => Type::string()],
             'last_name'   => ['name' => 'last_name', 'type' => Type::string()],
             'middle_name' => ['name' => 'middle_name', 'type' => Type::string()],
+            'query_string' => ['name' => 'query_string', 'type' => Type::string()],
+            'organization_uuid' => ['name' => 'organization_uuid', 'type' => Type::string()],
         ];
     }
 
@@ -35,6 +37,11 @@ class UsersQuery extends Query
             return User::where('uuid', $args['uuid'])->get();
         } else if (isset($args['email'])) {
             return User::where('email', $args['email'])->get();
+        } else if (isset($args['query_string'])) {
+            return User::where('first_name', 'LIKE', "{$args['query_string']}%")->get();
+        } else if (isset($args['organization_uuid']) && isset($args['query_string'])) {
+            $organization = Organization::where('uuid', $args['query_string']);
+            return $organization->users()->where('first_name', 'LIKE', "{$args['query_string']}%")->get();
         } else {
             return User::all();
         }
