@@ -3,6 +3,8 @@
 use App\GraphQL\InputTypes\OrganizationInputType;
 use App\GraphQL\InputTypes\UserInputType;
 use App\GraphQL\InputTypes\TeamInputType;
+use App\GraphQL\InputTypes\ClientInputType;
+use App\GraphQL\InputTypes\ContactInputType;
 
 use App\GraphQL\Mutation\Organization\CreateOrganizationMutation;
 use App\GraphQL\Mutation\Organization\UpdateOrganizationMutation;
@@ -12,14 +14,20 @@ use App\GraphQL\Mutation\User\VerifyUserMutation;
 use App\GraphQL\Mutation\Team\CreateTeamMutation;
 use App\GraphQL\Mutation\Team\UpdateTeamMutation;
 use App\GraphQL\Mutation\Team\DeleteTeamMutation;
+use App\GraphQL\Mutation\Client\CreateClientMutation;
+use App\GraphQL\Mutation\Client\UpdateClientMutation;
+use App\GraphQL\Mutation\Client\DeleteClientMutation;
 
 use App\GraphQL\Query\Organization\OrganizationQuery;
 use App\GraphQL\Query\User\UsersQuery;
 use App\GraphQL\Query\Team\TeamsQuery;
+use App\GraphQL\Query\Client\ClientsQuery;
 
 use App\GraphQL\Type\OrganizationType;
 use App\GraphQL\Type\UserType;
 use App\GraphQL\Type\TeamType;
+use App\GraphQL\Type\ClientType;
+use App\GraphQL\Type\ContactType;
 
 return [
 
@@ -150,6 +158,7 @@ return [
                 UsersQuery::class,
                 OrganizationQuery::class,
                 TeamsQuery::class,
+                ClientsQuery::class,
             ],
             'mutation'     => [
                 CreateUserMutation::class,
@@ -162,6 +171,10 @@ return [
                 CreateTeamMutation::class,
                 UpdateTeamMutation::class,
                 DeleteTeamMutation::class,
+
+                CreateClientMutation::class,
+                UpdateClientMutation::class,
+                DeleteClientMutation::class,
             ],
             'subscription' => [],
             'types'        => [],
@@ -221,11 +234,15 @@ return [
         UserType::class,
         OrganizationType::class,
         TeamType::class,
+        ClientType::class,
+        ContactType::class,
 
         // Input Types
         UserInputType::class,
         OrganizationInputType::class,
         TeamInputType::class,
+        ClientInputType::class,
+        ContactInputType::class,
     ],
 
     /*

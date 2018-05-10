@@ -13,8 +13,9 @@ namespace App\Models;
 class Client extends BaseModel
 {
     protected $fillable = [
-        'organization_id',
-        'contact_id',
+        'uuid',
+        'organization_uuid',
+        'contact_uuid',
         'name',
         'invoice_prefix',
         'address',

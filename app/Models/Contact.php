@@ -10,6 +10,7 @@ namespace App\Models;
 class Contact extends BaseModel
 {
     protected $fillable = [
+        'uuid',
         'first_name',
         'last_name',
         'email',

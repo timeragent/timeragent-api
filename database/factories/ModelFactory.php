@@ -15,6 +15,8 @@ use App\Models\Organization;
 use App\Models\User;
 use App\Models\Team;
 use Ramsey\Uuid\Uuid;
+use App\Models\Client;
+use App\Models\Contact;
 use \Illuminate\Support\Facades\Hash;
 
 $factory->define(
@@ -63,6 +65,20 @@ $factory->define(
                 }
                 throw new \InvalidArgumentException("Relation type {$row['owner_type']}  is not defined");
             }
+        ];
+}
+);
+
+$factory->define(
+    Client::class, function(Faker\Generator $faker) {
+        return [
+            'uuid' => Uuid::uuid4()->toString(),
+            'name' => $faker->company,
+            'organization_uuid' => Organization::inRandomOrder()->first(),
+            'contact_uuid' => Contact::inRandomOrder()->first(),
+            'address' => $faker->streetName,
+            'invoice_prefix' => $faker->stateAbbr,
+            'rate' => $faker->numberBetween(10,50),
         ];
 }
 );
