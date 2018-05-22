@@ -45,6 +45,10 @@ class UserInputType extends InputType
                 'type'        => Type::string(),
                 'description' => 'The name of user',
             ],
+            'cost_rate'   => [
+                'type'        => Type::float(),
+                'description' => 'The cost rate of user',
+            ]
         ];
     }
 }

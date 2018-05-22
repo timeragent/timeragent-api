@@ -51,6 +51,10 @@ class UserType extends GraphQLType
                 'type'        => Type::listOf(GraphQL::type('Organization')),
                 'description' => 'Organizations owned by user',
             ],
+            'cost_rate'     => [
+                'type'        => Type::float(),
+                'description' => 'The cost rate of the user',
+            ]
         ];
     }
 

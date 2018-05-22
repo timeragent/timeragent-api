@@ -111,8 +111,13 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
 
     public function projects()
     {
-        return $this->belongsToMany(Project::class, 'project_user', 'user_id', 'project_id')
+        return $this->belongsToMany(Project::class)
                     ->withTimestamps();
+    }
+
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class);
     }
 
     public function organizations()

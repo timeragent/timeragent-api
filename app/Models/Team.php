@@ -22,7 +22,7 @@ class Team extends BaseModel
 
     public function projects()
     {
-        return $this->belongsToMany(Project::class, 'projects_teams', 'team_id', 'project_id');
+        return $this->belongsToMany(Project::class);
     }
 
     public function scopeIManage($query, $user_id = null)
@@ -33,7 +33,7 @@ class Team extends BaseModel
     public function scopeGetTeams($query, $owner_type, $owner_uuid)
     {
         return $query->where('owner_type', $owner_type)
-            ->where('owner_uuid', $owner_uuid)->get();
+            ->where('owner_uuid', $owner_uuid);
     }
 
     public function users()

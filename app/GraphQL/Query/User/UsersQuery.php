@@ -3,6 +3,7 @@
 namespace App\GraphQL\Query\User;
 
 use App\Models\User;
+use App\Models\Organization;
 use Folklore\GraphQL\Support\Query;
 use GraphQL;
 use GraphQL\Type\Definition\Type;
@@ -37,11 +38,11 @@ class UsersQuery extends Query
             return User::where('uuid', $args['uuid'])->get();
         } else if (isset($args['email'])) {
             return User::where('email', $args['email'])->get();
+        } else if (isset($args['organization_uuid']) && isset($args['query_string'])) {
+            $organization = Organization::find($args['organization_uuid']);
+            return $organization->users()->where('first_name', 'LIKE', "{$args['query_string']}%")->get();
         } else if (isset($args['query_string'])) {
             return User::where('first_name', 'LIKE', "{$args['query_string']}%")->get();
-        } else if (isset($args['organization_uuid']) && isset($args['query_string'])) {
-            $organization = Organization::where('uuid', $args['query_string']);
-            return $organization->users()->where('first_name', 'LIKE', "{$args['query_string']}%")->get();
         } else {
             return User::all();
         }

@@ -6,11 +6,11 @@ use Folklore\GraphQL\Support\InputType;
 use GraphQL\Type\Definition\Type;
 use GraphQL;
 
-class TeamInputType extends InputType
+class ProjectInputType extends InputType
 {
     protected $attributes = [
-        'name'        => 'TeamInput',
-        'description' => 'A Team'
+        'name'        => 'ProjectInput',
+        'description' => 'A Project'
     ];
 
     protected $inputObject = true;
@@ -26,6 +26,10 @@ class TeamInputType extends InputType
                 'type'        => Type::nonNull(Type::string()),
                 'description' => 'The name of the team',
             ],
+            'client_uuid'     => [
+                'type'        => Type::string(),
+                'description' => 'The uuid of the client',
+            ],
             'owner_type' => [
                 'type'        => Type::nonNull(Type::string()),
                 'description' => 'Type of team owner',
@@ -33,6 +37,10 @@ class TeamInputType extends InputType
             'owner_uuid' => [
                 'type'        => Type::nonNull(Type::string()),
                 'description' => 'Uuid of the team owner',
+            ],
+            'teams'      => [
+                'type' => Type::listOf(GraphQL::type('TeamInput')),
+                'description' => 'List of project teams',
             ],
             'users'      => [
                 'type'        => Type::listOf(GraphQL::type('ProjectUserInput')),

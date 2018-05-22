@@ -14,7 +14,13 @@ namespace App\Models;
  */
 class Project extends BaseModel
 {
-    protected $fillable = ['name', 'owner_id', 'client_id'];
+    protected $fillable = [
+        'uuid',
+        'name',
+        'owner_type',
+        'owner_uuid',
+        'client_uuid'
+    ];
 
     public function attachTeam($team_id)
     {
@@ -25,12 +31,12 @@ class Project extends BaseModel
 
     public function teams()
     {
-        return $this->belongsToMany(Team::class, 'projects_teams', 'project_id', 'team_id');
+        return $this->belongsToMany(Team::class);
     }
 
-    public function detachTeam($team_id)
+    public function detachTeam($team_uuid)
     {
-        $this->teams()->detach($team_id);
+        $this->teams()->detach($team_uuid);
 
         return $this;
     }
@@ -45,40 +51,46 @@ class Project extends BaseModel
 
     public function usersWithoutTeam()
     {
-        return $this->belongsToMany(User::class, 'project_user', 'project_id', 'user_id')
-                    ->wherePivot('team_id', null)
-                    ->withPivot('billable_rate', 'cost_rate', 'team_id')
+        return $this->belongsToMany(User::class)
+                    ->wherePivot('team_uuid', null)
+                    ->withPivot('cost_rate', 'team_uuid')
                     ->withTimestamps();
     }
 
-    public function attachUser($user_id, $pivot = [])
+    public function attachUser($user_uuid, $pivot = [])
     {
-        $this->users()->attach($user_id, $pivot);
+        $this->users()->attach($user_uuid, $pivot);
 
         return $this;
     }
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'project_user', 'project_id', 'user_id')
-                    ->withPivot('billable_rate', 'billable_currency', 'cost_rate', 'cost_currency', 'team_id')
+        return $this->belongsToMany(User::class)
+                    ->withPivot('cost_rate')
                     ->withTimestamps();
     }
 
-    public function detachUser($user_id, $team_id)
+    public function detachUser($user_uuid, $team_uuid)
     {
-        $this->users()->wherePivot('team_id', $team_id)->detach($user_id);
+        $this->users()->wherePivot('team_uuid', $team_uuid)->detach($user_uuid);
 
         return $this;
     }
 
     public function tasks()
     {
-        return $this->hasMany(Task::class, 'project_id');
+        return $this->hasMany(Task::class, 'project_uuid');
     }
 
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function scopeGetProjects($query, $owner_type, $owner_uuid)
+    {
+        return $query->where('owner_type', $owner_type)
+            ->where('owner_uuid', $owner_uuid);
     }
 }

@@ -5,6 +5,9 @@ use App\GraphQL\InputTypes\UserInputType;
 use App\GraphQL\InputTypes\TeamInputType;
 use App\GraphQL\InputTypes\ClientInputType;
 use App\GraphQL\InputTypes\ContactInputType;
+use App\GraphQL\InputTypes\ProjectInputType;
+use App\GraphQL\InputTypes\ProjectUserInputType;
+use App\GraphQL\InputTypes\ProjectUserOptionsInputType;
 
 use App\GraphQL\Mutation\Organization\CreateOrganizationMutation;
 use App\GraphQL\Mutation\Organization\UpdateOrganizationMutation;
@@ -17,17 +20,25 @@ use App\GraphQL\Mutation\Team\DeleteTeamMutation;
 use App\GraphQL\Mutation\Client\CreateClientMutation;
 use App\GraphQL\Mutation\Client\UpdateClientMutation;
 use App\GraphQL\Mutation\Client\DeleteClientMutation;
+use App\GraphQL\Mutation\Project\CreateProjectMutation;
+use App\GraphQL\Mutation\Project\UpdateProjectMutation;
+use App\GraphQL\Mutation\Project\DeleteProjectMutation;
 
 use App\GraphQL\Query\Organization\OrganizationQuery;
 use App\GraphQL\Query\User\UsersQuery;
 use App\GraphQL\Query\Team\TeamsQuery;
 use App\GraphQL\Query\Client\ClientsQuery;
+use App\GraphQL\Query\Project\ProjectsQuery;
 
 use App\GraphQL\Type\OrganizationType;
 use App\GraphQL\Type\UserType;
 use App\GraphQL\Type\TeamType;
 use App\GraphQL\Type\ClientType;
 use App\GraphQL\Type\ContactType;
+use App\GraphQL\Type\ProjectType;
+use App\GraphQL\Type\ProjectUserType;
+use App\GraphQL\Type\ProjectUserOptionsType;
+
 
 return [
 
@@ -159,6 +170,7 @@ return [
                 OrganizationQuery::class,
                 TeamsQuery::class,
                 ClientsQuery::class,
+                ProjectsQuery::class,
             ],
             'mutation'     => [
                 CreateUserMutation::class,
@@ -175,6 +187,10 @@ return [
                 CreateClientMutation::class,
                 UpdateClientMutation::class,
                 DeleteClientMutation::class,
+
+                CreateProjectMutation::class,
+                UpdateProjectMutation::class,
+                DeleteProjectMutation::class,
             ],
             'subscription' => [],
             'types'        => [],
@@ -236,6 +252,9 @@ return [
         TeamType::class,
         ClientType::class,
         ContactType::class,
+        ProjectType::class,
+        ProjectUserType::class,
+        ProjectUserOptionsType::class,
 
         // Input Types
         UserInputType::class,
@@ -243,6 +262,9 @@ return [
         TeamInputType::class,
         ClientInputType::class,
         ContactInputType::class,
+        ProjectInputType::class,
+        ProjectUserInputType::class,
+        ProjectUserOptionsInputType::class,
     ],
 
     /*
