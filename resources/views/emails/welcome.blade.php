@@ -6,7 +6,7 @@
     an {{config('app.name')}} account. You need to verify your email address and
     activate your account by clicking the button below.
 
-    @component('mail::button', ['url' => url(env('FRONT_URL') . '/verify/'.$user->uuid)])
+    @component('mail::button', ['url' => url(env('FRONT_URL') . 'verify/'.$user->uuid)])
         Confirm Account
     @endcomponent
 

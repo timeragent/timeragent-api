@@ -34,7 +34,7 @@ class RegisterMutator
 
         Mail::to($user->email)->send(new Welcome($user));
 
-        return 'User created successfully';
+        return 'Account creation success. Please confirm your email to complete registration';
     }
 
     protected function validator(array $data)
@@ -56,7 +56,6 @@ class RegisterMutator
         $user->middle_name = $data['middleName'];
         $user->email = $data['email'];
         $user->password = bcrypt($data['password']);
-        $user->verification_token = 0;
         $user->save();
 
 
@@ -76,7 +75,7 @@ class RegisterMutator
             ], 500)->getData();
         }
 
-        if ($user->verification_token !== 0) {
+        if ($user->verification_token !== null) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'User already verified',
