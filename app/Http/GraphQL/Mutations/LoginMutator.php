@@ -42,6 +42,10 @@ class LoginMutator
             'expiresIn' => $token['expires_in']
         ];
 
+        if ($user->verification_token === null) {
+            throw new \Exception('This email is not verified');
+        }
+
         return $token_data;
     }
 

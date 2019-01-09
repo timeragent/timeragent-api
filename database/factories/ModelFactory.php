@@ -28,7 +28,7 @@ $factory->define(
         'middle_name'        => null,
         'email'              => $faker->email,
         'password'           => Hash::make($faker->password),
-        'verification_token' => $faker->boolean,
+        'verification_token' => $faker->boolean ? str_random(20) : null,
         'remember_token'     => $faker->password(100, 100),
         'created_at'         => $faker->dateTime,
     ];

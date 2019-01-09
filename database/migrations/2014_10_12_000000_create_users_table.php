@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('middle_name')->nullable();
-            $table->string('verification_token', 100);
+            $table->string('verification_token', 100)->nullable();
             $table->string('email')->unique();
             $table->string('password');
             $table->boolean('admin')->default(false);

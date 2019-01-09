@@ -44,7 +44,7 @@ return [
     'route' => [
         'prefix' => '',
          'middleware' => [
-             'cors'
+             'cors',
          ]
     ],
 
