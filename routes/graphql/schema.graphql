@@ -1,0 +1,338 @@
+"A datetime string with format 'Y-m-d H:i:s', e.g. '2018-01-01 13:00:00'."
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+
+"A date string with format 'Y-m-d', e.g. '2011-05-23'."
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+
+
+type Query @group(middleware: ["auth:api"]) {
+  users: [User!]! @all
+  fetchMe: User @auth
+  searchAllUsers(queryString: String!): [User]
+  searchOrganizationMembers(queryString: String!, organizationUuid: String!): [User]
+  searchPersonalTeams(queryString: String!, userUuid: String!): [Team]
+  searchOrganizationTeams(queryString: String!, organizationUuid: String!): [Team]
+  fetchTasks(date: String, userUuid: String, organizationUuid: String): [Task]
+  fetchProjects(ownerType: String, ownerUuid: String, userUuid: String): [Project]
+  fetchProject(uuid: String!): Project
+  fetchOrganization(uuid: String!): Organization
+  fetchClients(organizationUuid: String!): [Client]
+  fetchClient(uuid: String): Client @find
+  fetchTeams(ownerType: String!, ownerUuid: String!, userUuid: String): [Team]
+  fetchTeam(uuid: String!): Team
+  fetchOrganizationMembers(organizationUuid: String!): [User]
+}
+
+type Mutation {
+  createUser(
+    user: UserInput!
+  ): Response @field(resolver: "App\\Http\\GraphQL\\Mutations\\RegisterMutator@createUser")
+
+  loginUser(
+    email: String!
+    password: String!
+  ): TokenData @field(resolver: "App\\Http\\GraphQL\\Mutations\\LoginMutator@loginUser")
+
+  verifyEmail(
+    verificationCode: String
+  ): Response @field(resolver: "App\\Http\\GraphQL\\Mutations\\RegisterMutator@verifyEmail")
+}
+
+extend type Mutation @group(middleware: ["auth:api"]) {
+  #    USER
+  updateUser(
+    id: ID @rules(apply: ["required"])
+    name: String
+    email: String @rules(apply: ["email"])
+  ): User @update(model: "App\\Models\\User")
+
+  deleteUser(
+    id: ID @rules(apply: ["required"])
+  ): User @delete(model: "App\\Models\\User")
+
+  #    TASKS
+  createTask(
+    task: TaskInput!
+  ): Task @field(resolver: "App\\Http\\GraphQL\\Mutations\\TaskMutator@createTask")
+
+  updateTask(
+    task: TaskInput!
+    date: String
+  ): Task @field(resolver: "App\\Http\\GraphQL\\Mutations\\TaskMutator@updateTask")
+
+  deleteTask(
+    uuid: String
+    uuids: [String]
+  ): Task @field(resolver: "App\\Http\\GraphQL\\Mutations\\TaskMutator@deleteTask")
+
+  #    TIME ENTRY
+  createTimeEntry(
+    timeEntry: TimeEntryInput!
+  ): TimeEntry @field(resolver: "App\\Http\\GraphQL\\Mutations\\TimeEntryMutator@createTimeEntry")
+
+  updateTimeEntry(
+    timeEntry: TimeEntryInput!
+  ): TimeEntry @field(resolver: "App\\Http\\GraphQL\\Mutations\\TimeEntryMutator@updateTimeEntry")
+
+  deleteTimeEntry(
+    uuid: String!
+  ): TimeEntry @field(resolver: "App\\Http\\GraphQL\\Mutations\\TimeEntryMutator@deleteTimeEntry")
+
+  #    ORGANIZATION
+  createOrganization(
+    organization: OrganizationInput!
+    userUuid: String!
+  ): Organization @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@createOrganization")
+
+  updateOrganization(
+    organization: OrganizationInput!
+  ): Organization @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@updateOrganization")
+
+  updateOrganizationMembers(
+    members: [User]
+    organizationUuid: String!
+  ): [User]
+    @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@updateOrganizationMembers")
+
+  #    PROJECT
+  createProject(
+    project: ProjectInput
+  ): Project @field(resolver: "App\\Http\\GraphQL\\Mutations\\ProjectMutator@createProject")
+
+  updateProject(
+    project: ProjectInput!
+  ): Project @field(resolver: "App\\Http\\GraphQL\\Mutations\\ProjectMutator@updateProject")
+
+  deleteProject(
+    uuid: String!
+  ): Project @field(resolver: "App\\Http\\GraphQL\\Mutations\\ProjectMutator@deleteProject")
+
+  #    CLIENT
+  createClient(
+    client: ClientInput!
+    contact: ContactInput!
+  ): Client @field(resolver: "App\\Http\\GraphQL\\Mutations\\ClientMutator@createClient")
+
+  updateClient(
+    client: ClientInput!
+    contact: ContactInput!
+  ): Client @field(resolver: "App\\Http\\GraphQL\\Mutations\\ClientMutator@updateClient")
+
+  deleteClient(
+    clientUuid: String!
+    contactUuid: String!
+  ): Client @field(resolver: "App\\Http\\GraphQL\\Mutations\\ClientMutator@deleteClient")
+
+  #    TEAM
+  createTeam(
+    team: TeamInput!
+  ): Team @field(resolver: "App\\Http\\GraphQL\\Mutations\\TeamMutator@createTeam")
+
+  updateTeam(
+    team: TeamInput!
+  ): Team @field(resolver: "App\\Http\\GraphQL\\Mutations\\TeamMutator@updateTeam")
+
+  deleteTeam(
+    uuid: String!
+  ): Team @field(resolver: "App\\Http\\GraphQL\\Mutations\\TeamMutator@deleteTeam")
+}
+
+type User {
+  uuid: String
+  name: String @field(resolver: "App\\Http\\GraphQL\\Types\\UserType@name")
+  firstName: String @field(resolver: "App\\Http\\GraphQL\\Types\\UserType@firstName")
+  lastName: String @field(resolver: "App\\Http\\GraphQL\\Types\\UserType@lastName")
+  middleName: String @field(resolver: "App\\Http\\GraphQL\\Types\\UserType@middleName")
+  email: String
+  organizations: [Organization]
+  statusInOrganization(organizationUuid: String): Int
+    @field(resolver: "App\\Http\\GraphQL\\Types\\UserType@statusInOrganization")
+  options: Options @field(resolver: "App\\Http\\GraphQL\\Types\\UserType@options")
+  costRate: Float @field(resolver: "App\\Http\\GraphQL\\Types\\UserType@costRate")
+  createdAt: DateTime @field(resolver: "App\\Http\\GraphQL\\Types\\UserType@createdAt")
+  updatedAt: DateTime @field(resolver: "App\\Http\\GraphQL\\Types\\UserType@updatedAt")
+}
+
+type Organization {
+  uuid: String,
+  email: String,
+  name: String,
+  address: String,
+  phone: String,
+  website: String,
+  owners: [User]
+  options: Options @field(resolver: "App\\Http\\GraphQL\\Types\\OrganizationType@options")
+}
+
+type Task {
+  uuid: String
+  description: String
+  eta: Int
+  userUuid: String @field(resolver: "App\\Http\\GraphQL\\Types\\TaskType@userUuid")
+  projectUuid: String @field(resolver: "App\\Http\\GraphQL\\Types\\TaskType@projectUuid")
+  project: Project
+  timeEntries(date: String): [TimeEntry] @field(resolver: "App\\Http\\GraphQL\\Types\\TaskType@timeEntries")
+  total(date: String): Int @field(resolver: "App\\Http\\GraphQL\\Types\\TaskType@total")
+  createdAt: DateTime @field(resolver: "App\\Http\\GraphQL\\Types\\TaskType@createdAt")
+}
+
+type TimeEntry {
+  uuid: String
+  active: Boolean
+  taskUuid: String @field(resolver: "App\\Http\\GraphQL\\Types\\TimeEntryType@taskUuid")
+  startTime: String @field(resolver: "App\\Http\\GraphQL\\Types\\TimeEntryType@startTime")
+  endTime: String @field(resolver: "App\\Http\\GraphQL\\Types\\TimeEntryType@endTime")
+}
+
+type Project {
+  uuid: String
+  name: String
+  clientUuid: String @field(resolver: "App\\Http\\GraphQL\\Types\\ProjectType@clientUuid")
+  clientName: String @field(resolver: "App\\Http\\GraphQL\\Types\\ProjectType@clientName")
+  ownerType: String @field(resolver: "App\\Http\\GraphQL\\Types\\ProjectType@ownerType")
+  ownerUuid: String @field(resolver: "App\\Http\\GraphQL\\Types\\ProjectType@ownerUuid")
+  ownerName: String @field(resolver: "App\\Http\\GraphQL\\Types\\ProjectType@ownerName")
+  teams: [Team]
+  users: [User] @field(resolver: "App\\Http\\GraphQL\\Types\\ProjectType@users")
+}
+
+type Team {
+  uuid: String
+  name: String
+  ownerType: String @field(resolver: "App\\Http\\GraphQL\\Types\\TeamType@ownerType")
+  ownerUuid: String @field(resolver: "App\\Http\\GraphQL\\Types\\TeamType@ownerUuid")
+  ownerName: String @field(resolver: "App\\Http\\GraphQL\\Types\\TeamType@ownerName")
+  users(projectUuid: String): [User] @field(resolver: "App\\Http\\GraphQL\\Types\\TeamType@users")
+}
+
+type Client {
+  uuid: String
+  name: String
+  organizationUuid: String @field(resolver: "App\\Http\\GraphQL\\Types\\ClientType@organizationUuid")
+  contactUuid: String @field(resolver: "App\\Http\\GraphQL\\Types\\ClientType@contactUuid")
+  address: String
+  invoicePrefix: String @field(resolver: "App\\Http\\GraphQL\\Types\\ClientType@invoicePrefix")
+  rate: String
+  contact: Contact
+}
+
+type Contact {
+  uuid: String
+  firstName: String  @field(resolver: "App\\Http\\GraphQL\\Types\\ContactType@firstName")
+  lastName: String  @field(resolver: "App\\Http\\GraphQL\\Types\\ContactType@lastName")
+  name: String @field(resolver: "App\\Http\\GraphQL\\Types\\ContactType@name")
+  email: String
+  telephone: String
+}
+
+type Response {
+  status: String
+  message: String
+  statusCode: Int
+  redirectUrl: String
+}
+
+type TokenData {
+  tokenType: String
+  accessToken: String
+  refreshToken: String
+  expiresIn: Int
+}
+
+type Options {
+  costRate: Float
+  status: Int
+}
+
+#INPUT TYPES
+input UserInput {
+  uuid: String
+  name: String
+  firstName: String
+  lastName: String
+  middleName: String
+  email: String
+  password: String
+  organizations: [OrganizationInput]
+  statusInOrganization: Int
+  options: OptionsInput
+  costRate: Float
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input TaskInput {
+  uuid: String
+  description: String
+  eta: Int
+  userUuid: String
+  projectUuid: String
+  project: ProjectInput
+  timeEntries: [TimeEntryInput]
+  total: Int
+  createdAt: String
+}
+
+input ProjectInput {
+  uuid: String
+  name: String
+  clientUuid: String
+  clientName: String
+  ownerType: String
+  ownerUuid: String
+  ownerName: String
+  teams: [TeamInput]
+  users: [UserInput]
+}
+
+input TeamInput {
+  uuid: String
+  name: String
+  ownerType: String
+  ownerUuid: String
+  ownerName: String
+  users: [UserInput]
+}
+
+input TimeEntryInput {
+  uuid: String
+  active: Boolean
+  taskUuid: String
+  startTime: String
+  endTime: String
+}
+
+input OrganizationInput {
+  uuid: String
+  email: String
+  name: String
+  address: String
+  phone: String
+  website: String
+  owners: [UserInput]
+  options: OptionsInput
+}
+
+input ClientInput {
+  uuid: String
+  name: String
+  organizationUuid: String
+  contactUuid: String
+  address: String
+  invoicePrefix: String
+  rate: String
+  contact: ContactInput
+}
+
+input ContactInput {
+  uuid: String
+  firstName: String
+  lastName: String
+  email: String
+  telephone: String
+}
+
+input OptionsInput {
+  costRate: Float
+  status: Int
+}
