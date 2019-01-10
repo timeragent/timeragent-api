@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(env('FRONT_URL'));
 });
 
 Route::get('/auth/confirm/{uuid}', 'Auth\RegisterController@confirmEmail');
