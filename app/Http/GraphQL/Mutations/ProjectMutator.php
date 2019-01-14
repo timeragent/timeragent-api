@@ -56,7 +56,9 @@ class ProjectMutator
 
         $uuids = array_merge($team_users_uuids, $users_uuids);
 
-        $uuids = array_merge(...$uuids);
+        if ($uuids) {
+            $uuids = array_merge(...$uuids);
+        }
 
         $project->users()->sync($uuids);
 
@@ -111,7 +113,9 @@ class ProjectMutator
 
         $uuids = array_merge($team_users_uuids, $users_uuids);
 
-        $uuids = array_merge(...$uuids);
+        if ($uuids) {
+            $uuids = array_merge(...$uuids);
+        }
 
         $project->users()->sync($uuids);
 

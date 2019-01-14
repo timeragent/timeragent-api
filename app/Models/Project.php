@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
+
 /**
  * App\Models\Project
  *
@@ -91,33 +93,58 @@ class Project extends BaseModel
     public function scopeGetProjects($query, $owner_type, $owner_uuid, $user_uuid = null)
     {
         return $query->where(function($query) use ($owner_type, $owner_uuid, $user_uuid) {
-            if ($user_uuid) {
-                $query->where('owner_type', $owner_type)
-                    ->where('owner_uuid', $owner_uuid);
-            } else {
                 $query->where('owner_type', $owner_type);
-            }
-        })
-            ->where(function($query) use ($owner_type, $owner_uuid, $user_uuid) {
-                if ($user_uuid) {
-                    $query->whereHas('teams', function ($query) use($user_uuid) {
-                        $query->whereHas('users', function ($query) use ($user_uuid) {
-                            $query->where('uuid', $user_uuid);
-                        });
-                    })
-                        ->orWhereHas('users', function($query) use ($user_uuid) {
-                            $query->where('uuid', $user_uuid);
-                        });
-                } else {
-                    $query->whereHas('teams', function ($query) use($owner_uuid) {
-                        $query->whereHas('users', function ($query) use ($owner_uuid) {
-                            $query->where('uuid', $owner_uuid);
-                        });
-                    })
-                        ->orWhereHas('users', function($query) use ($owner_uuid) {
-                            $query->where('uuid', $owner_uuid);
-                        });
+
+                if ($owner_type === User::MORPH_NAME) {
+                    $query->where(function($query) use ($owner_uuid, $user_uuid) {
+                        $query->where('owner_uuid', $owner_uuid)
+                              ->orWhere(
+                                  function ($query) use ($user_uuid) {
+                                      $query->whereHas(
+                                          'teams', function ($query) use ($user_uuid) {
+                                          $query->whereHas(
+                                              'users', function ($query) use ($user_uuid) {
+                                              $query->where('uuid', $user_uuid);
+                                          }
+                                          );
+                                      }
+                                      )
+                                            ->orWhereHas(
+                                                'users', function ($query) use ($user_uuid) {
+                                                $query->where('uuid', $user_uuid);
+                                            }
+                                            );
+                                  }
+                              );
+                    });
                 }
-            });
+
+                if ($owner_type === Organization::MORPH_NAME) {
+                    $query->where('owner_uuid', $owner_uuid);
+
+                    $organization = Organization::find($owner_uuid);
+
+                    $owners_uuids = $organization->owners->pluck('uuid')->toArray();
+
+                    if (!in_array($user_uuid, $owners_uuids)) {
+                        $query->where(function($query) use ($owner_type, $owner_uuid, $user_uuid) {
+                            $query->whereHas(
+                                'teams', function ($query) use ($user_uuid) {
+                                $query->whereHas(
+                                    'users', function ($query) use ($user_uuid) {
+                                    $query->where('uuid', $user_uuid);
+                                }
+                                );
+                            }
+                            )
+                                  ->orWhereHas(
+                                      'users', function ($query) use ($user_uuid) {
+                                      $query->where('uuid', $user_uuid);
+                                  }
+                                  );
+                        });
+                    }
+                }
+        });
     }
 }
