@@ -203,6 +203,7 @@ type Team {
   ownerUuid: String @field(resolver: "App\\Http\\GraphQL\\Types\\TeamType@ownerUuid")
   ownerName: String @field(resolver: "App\\Http\\GraphQL\\Types\\TeamType@ownerName")
   users(projectUuid: String): [User] @field(resolver: "App\\Http\\GraphQL\\Types\\TeamType@users")
+  projects: [Project]
 }
 
 type Client {
@@ -292,6 +293,7 @@ input TeamInput {
   ownerUuid: String
   ownerName: String
   users: [UserInput]
+  projects: [ProjectInput]
 }
 
 input TimeEntryInput {
