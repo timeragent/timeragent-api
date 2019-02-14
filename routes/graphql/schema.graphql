@@ -17,7 +17,7 @@ type Query @group(middleware: ["auth:api"]) {
   fetchProject(uuid: String!): Project
   fetchOrganization(uuid: String!): Organization
   fetchClients(organizationUuid: String!): [Client]
-  fetchClient(uuid: String): Client @find
+  fetchClient(uuid: String!): Client
   fetchTeams(ownerType: String!, ownerUuid: String!, userUuid: String): [Team]
   fetchTeam(uuid: String!): Team
   fetchOrganizationMembers(organizationUuid: String!): [User]
