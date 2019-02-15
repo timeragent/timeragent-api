@@ -214,6 +214,7 @@ type Client {
   address: String
   invoicePrefix: String @field(resolver: "App\\Http\\GraphQL\\Types\\ClientType@invoicePrefix")
   rate: String
+  website: String
   contact: Contact
 }
 
@@ -322,6 +323,7 @@ input ClientInput {
   contactUuid: String
   address: String
   invoicePrefix: String
+  website: String
   rate: String
   contact: ContactInput
 }
