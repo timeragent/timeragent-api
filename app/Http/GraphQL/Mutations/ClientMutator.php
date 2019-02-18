@@ -27,6 +27,7 @@ class ClientMutator
         $client->organization_uuid = $client_data['organizationUuid'];
         $client->invoice_prefix    = $client_data['invoicePrefix'];
         $client->address           = $client_data['address'];
+        $client->website           = $client_data['website'];
         $client->contact_uuid      = $contact->uuid;
         $client->save();
 
@@ -53,6 +54,7 @@ class ClientMutator
         $client->organization_uuid = $client_data['organizationUuid'];
         $client->invoice_prefix    = $client_data['invoicePrefix'];
         $client->address           = $client_data['address'];
+        $client->website           = $client_data['website'];
         $client->contact_uuid      = $contact->uuid;
         $client->save();
 
