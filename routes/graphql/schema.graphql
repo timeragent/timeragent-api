@@ -94,6 +94,20 @@ extend type Mutation @group(middleware: ["auth:api"]) {
   ): [User]
     @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@updateOrganizationMembers")
 
+  createOrganizationInvite(
+    organizationUuid: String!,
+    emails: [String]!
+  ): [OrganizationInvite] @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@createOrganizationInvite")
+
+
+  acceptOrganizationInvite(
+    token: String!
+  ): Organization @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@acceptInvite")
+
+  declineOrganizationInvite(
+    token: String!
+  ): Organization @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@declineInvite")
+
   #    PROJECT
   createProject(
     project: ProjectInput
@@ -242,6 +256,11 @@ type TokenData {
 
 type Options {
   costRate: Float
+  status: Int
+}
+
+type OrganizationInvite {
+  email: String
   status: Int
 }
 
