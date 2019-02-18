@@ -52,7 +52,7 @@ class Organization extends BaseModel
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withPivot('status');
     }
 
     public function clients()
