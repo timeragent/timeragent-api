@@ -21,6 +21,7 @@ type Query @group(middleware: ["auth:api"]) {
   fetchTeams(ownerType: String!, ownerUuid: String!, userUuid: String): [Team]
   fetchTeam(uuid: String!): Team
   fetchOrganizationMembers(organizationUuid: String!): [User]
+  fetchOrganizationInvites(organizationUuid: String!): [OrganizationInvite]
 }
 
 type Mutation {
@@ -99,10 +100,18 @@ extend type Mutation @group(middleware: ["auth:api"]) {
     emails: [String]!
   ): [OrganizationInvite] @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@createOrganizationInvite")
 
+  deleteOrganizationMember(
+    organizationUuid: String!,
+    memberUuid: String!
+  ): User @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@deleteOrganizationMember")
 
   acceptOrganizationInvite(
     token: String!
   ): Organization @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@acceptInvite")
+
+  deleteOrganizationInvite(
+    uuid: String!
+  ): Organization @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@deleteInvite")
 
   declineOrganizationInvite(
     token: String!
@@ -260,6 +269,7 @@ type Options {
 }
 
 type OrganizationInvite {
+  uuid: String
   email: String
   status: Int
 }

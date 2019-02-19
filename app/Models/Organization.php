@@ -69,4 +69,9 @@ class Organization extends BaseModel
     {
         return $this->hasMany(Team::class);
     }
+
+    public function invites()
+    {
+        return $this->hasMany(OrganizationInvite::class);
+    }
 }
