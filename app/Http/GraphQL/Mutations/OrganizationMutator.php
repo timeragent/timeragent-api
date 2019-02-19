@@ -83,6 +83,9 @@ class OrganizationMutator
         $invites = [];
 
         foreach ($emails as $email) {
+            if ($organization->users->where('email', $email)->first()) {
+                continue;
+            }
             $token = Password::getRepository()->createNewToken();
             $invite = new OrganizationInvite();
             $invite->organization_uuid = $organization->uuid;
@@ -105,7 +108,7 @@ class OrganizationMutator
                 });
         }
 
-        return $invites;
+        return $organization->invites()->where('status', OrganizationInvite::STATUS_PENDING)->get();
     }
 
     public function acceptInvite($root, $args)
@@ -113,6 +116,10 @@ class OrganizationMutator
         $invite = OrganizationInvite::where('token', $args['token'])->first();
 
         $user = User::where('email', $invite->email)->first();
+
+        if ($invite->organization->users->where('uuid', $user->uuid)->first()) {
+            throw new \Exception('You are already added to ' . $invite->organization->name . ' organization.');
+        }
 
         $invite->organization->users()->attach(
             $user->uuid,
@@ -135,5 +142,37 @@ class OrganizationMutator
         $invite->save();
 
         return null;
+    }
+
+    public function deleteOrganizationMember($root, $args)
+    {
+        $member = User::findOrFail($args['memberUuid']);
+
+        $organization = Organization::findOrFail($args['organizationUuid']);
+
+        $this->checkRights($organization);
+
+        $organization->users()->detach($member->uuid);
+
+        return $member;
+    }
+
+    public function deleteInvite($root, $args)
+    {
+        $invite = OrganizationInvite::findOrFail($args['uuid']);
+
+        $this->checkRights($invite->organization);
+
+        $invite->delete();
+
+        return $invite;
+    }
+
+    private function checkRights($organization) {
+        $user = Auth::user();
+
+        if ($organization->users->where('uuid', $user->uuid)->first()->pivot->status != 1) {
+            throw new \Exception('Access denied');
+        }
     }
 }
