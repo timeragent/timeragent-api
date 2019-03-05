@@ -75,6 +75,10 @@ extend type Mutation @group(middleware: ["auth:api"]) {
     timeEntry: TimeEntryInput!
   ): TimeEntry @field(resolver: "App\\Http\\GraphQL\\Mutations\\TimeEntryMutator@updateTimeEntry")
 
+  stopTimeEntry(
+    uuid: String!
+  ): TimeEntry @field(resolver: "App\\Http\\GraphQL\\Mutations\\TimeEntryMutator@stopTimeEntry")
+
   deleteTimeEntry(
     uuid: String!
   ): TimeEntry @field(resolver: "App\\Http\\GraphQL\\Mutations\\TimeEntryMutator@deleteTimeEntry")
