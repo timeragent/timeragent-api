@@ -221,6 +221,7 @@ type Project {
   ownerName: String @field(resolver: "App\\Http\\GraphQL\\Types\\ProjectType@ownerName")
   teams: [Team]
   users: [User] @field(resolver: "App\\Http\\GraphQL\\Types\\ProjectType@users")
+  tasks: [Task]
 }
 
 type Team {
@@ -318,6 +319,7 @@ input ProjectInput {
   ownerName: String
   teams: [TeamInput]
   users: [UserInput]
+  tasks: [TaskInput]
 }
 
 input TeamInput {
