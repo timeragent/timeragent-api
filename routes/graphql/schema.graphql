@@ -374,5 +374,6 @@ input ContactInput {
 
 input OptionsInput {
   costRate: Float
+  timeLimit: Float
   status: Int
 }
