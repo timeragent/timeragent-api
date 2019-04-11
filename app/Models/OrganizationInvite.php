@@ -9,11 +9,20 @@ namespace App\Models;
  */
 class OrganizationInvite extends BaseModel
 {
+    const STATUS_PENDING = 1;
+
+    const STATUS_DECLINED = 2;
+
+    const STATUS_ACCEPTED = 3;
+
     protected $fillable = [
-        'user_id',
-        'organization_id',
+        'organization_uuid',
         'email',
-        'accept_token',
-        'deny_token',
+        'token',
     ];
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
 }

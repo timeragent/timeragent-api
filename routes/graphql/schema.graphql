@@ -17,10 +17,11 @@ type Query @group(middleware: ["auth:api"]) {
   fetchProject(uuid: String!): Project
   fetchOrganization(uuid: String!): Organization
   fetchClients(organizationUuid: String!): [Client]
-  fetchClient(uuid: String): Client @find
+  fetchClient(uuid: String!): Client
   fetchTeams(ownerType: String!, ownerUuid: String!, userUuid: String): [Team]
   fetchTeam(uuid: String!): Team
   fetchOrganizationMembers(organizationUuid: String!): [User]
+  fetchOrganizationInvites(organizationUuid: String!): [OrganizationInvite]
 }
 
 type Mutation {
@@ -74,6 +75,10 @@ extend type Mutation @group(middleware: ["auth:api"]) {
     timeEntry: TimeEntryInput!
   ): TimeEntry @field(resolver: "App\\Http\\GraphQL\\Mutations\\TimeEntryMutator@updateTimeEntry")
 
+  stopTimeEntry(
+    uuid: String!
+  ): TimeEntry @field(resolver: "App\\Http\\GraphQL\\Mutations\\TimeEntryMutator@stopTimeEntry")
+
   deleteTimeEntry(
     uuid: String!
   ): TimeEntry @field(resolver: "App\\Http\\GraphQL\\Mutations\\TimeEntryMutator@deleteTimeEntry")
@@ -93,6 +98,28 @@ extend type Mutation @group(middleware: ["auth:api"]) {
     organizationUuid: String!
   ): [User]
     @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@updateOrganizationMembers")
+
+  createOrganizationInvite(
+    organizationUuid: String!,
+    emails: [String]!
+  ): [OrganizationInvite] @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@createOrganizationInvite")
+
+  deleteOrganizationMember(
+    organizationUuid: String!,
+    memberUuid: String!
+  ): User @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@deleteOrganizationMember")
+
+  acceptOrganizationInvite(
+    token: String!
+  ): Organization @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@acceptInvite")
+
+  deleteOrganizationInvite(
+    uuid: String!
+  ): Organization @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@deleteInvite")
+
+  declineOrganizationInvite(
+    token: String!
+  ): Organization @field(resolver: "App\\Http\\GraphQL\\Mutations\\OrganizationMutator@declineInvite")
 
   #    PROJECT
   createProject(
@@ -194,6 +221,7 @@ type Project {
   ownerName: String @field(resolver: "App\\Http\\GraphQL\\Types\\ProjectType@ownerName")
   teams: [Team]
   users: [User] @field(resolver: "App\\Http\\GraphQL\\Types\\ProjectType@users")
+  tasks: [Task]
 }
 
 type Team {
@@ -214,6 +242,7 @@ type Client {
   address: String
   invoicePrefix: String @field(resolver: "App\\Http\\GraphQL\\Types\\ClientType@invoicePrefix")
   rate: String
+  website: String
   contact: Contact
 }
 
@@ -243,6 +272,12 @@ type TokenData {
 type Options {
   costRate: Float
   timeLimit: Float
+  status: Int
+}
+
+type OrganizationInvite {
+  uuid: String
+  email: String
   status: Int
 }
 
@@ -285,6 +320,7 @@ input ProjectInput {
   ownerName: String
   teams: [TeamInput]
   users: [UserInput]
+  tasks: [TaskInput]
 }
 
 input TeamInput {
@@ -323,6 +359,7 @@ input ClientInput {
   contactUuid: String
   address: String
   invoicePrefix: String
+  website: String
   rate: String
   contact: ContactInput
 }
