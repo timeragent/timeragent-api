@@ -242,6 +242,7 @@ type TokenData {
 
 type Options {
   costRate: Float
+  timeLimit: Float
   status: Int
 }
 

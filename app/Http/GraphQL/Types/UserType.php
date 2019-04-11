@@ -35,6 +35,7 @@ class UserType
     {
         return [
             'costRate' => $user->pivot->cost_rate,
+            'timeLimit' => $user->pivot->time_limit,
             'status' => $user->pivot->status,
         ];
     }

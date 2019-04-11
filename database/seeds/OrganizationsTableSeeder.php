@@ -13,6 +13,6 @@ class OrganizationsTableSeeder extends Seeder
     public function run()
     {
         \DB::table('organizations')->delete();
-        factory(Organization::class, 50)->create();
+        factory(Organization::class, 5)->create();
     }
 }

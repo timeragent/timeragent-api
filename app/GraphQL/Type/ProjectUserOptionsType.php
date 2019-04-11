@@ -23,13 +23,20 @@ class ProjectUserOptionsType extends GraphQLType
     public function fields()
     {
         return [
-            'costRate'     => [
+            'costRate' => [
                 'type'        => Type::float(),
                 'description' => 'The cost rate of the user',
-                'resolve' => function($user) {
+                'resolve'     => function ($user) {
                     return $user->cost_rate;
-                }
-            ]
+                },
+            ],
+            'timeLimit' => [
+                'type'        => Type::float(),
+                'description' => 'The time limit of the user',
+                'resolve'     => function ($user) {
+                    return $user->time_limit;
+                },
+            ],
         ];
     }
 }

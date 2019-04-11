@@ -30,6 +30,7 @@ class ProjectMutator
                         $users[$user['uuid']] = [
                             'team_uuid' => $team['uuid'],
                             'cost_rate' => $user['options']['costRate'],
+                            'time_limit' => $user['options']['timeLimit'],
                         ];
                     }
 
@@ -46,6 +47,7 @@ class ProjectMutator
                         $user['uuid'] => [
                             'team_uuid' => null,
                             'cost_rate' => $user['options']['costRate'],
+                            'time_limit' => $user['options']['timeLimit'],
                         ],
                     ];
                 }
@@ -89,6 +91,7 @@ class ProjectMutator
                         $users[$user['uuid']] = [
                             'team_uuid' => $team['uuid'],
                             'cost_rate' => $user['options']['costRate'] ?? null,
+                            'time_limit' => $user['options']['timeLimit'] ?? 8,
                         ];
                     }
                     return $users;
@@ -103,6 +106,7 @@ class ProjectMutator
                         $user['uuid'] => [
                             'team_uuid' => null,
                             'cost_rate' => $user['options']['costRate'],
+                            'time_limit' => $user['options']['timeLimit'],
                         ],
                     ];
                 }

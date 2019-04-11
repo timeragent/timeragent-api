@@ -13,6 +13,6 @@ class ClientsTableSeeder extends Seeder
     public function run()
     {
         \DB::table('clients')->delete();
-        factory(Client::class, 50)->create();
+        factory(Client::class, 5)->create();
     }
 }

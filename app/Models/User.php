@@ -109,7 +109,7 @@ class User extends BaseModel implements \Illuminate\Contracts\Auth\Authenticatab
     public function projects()
     {
         return $this->belongsToMany(Project::class)
-                    ->withTimestamps()->withPivot('cost_rate');
+                    ->withTimestamps()->withPivot('cost_rate', 'time_limit');
     }
 
     public function teams()

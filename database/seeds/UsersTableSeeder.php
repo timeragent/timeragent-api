@@ -18,10 +18,10 @@ class UsersTableSeeder extends Seeder
             [
                 'first_name' => 'TimerAgent',
                 'last_name'  => 'Admin',
-                'email'      => 'andrew@digitalidea.studio',
+                'email'      => 'agent@timeragent.com',
                 'password'   => Hash::make('TimerAgent1!'),
             ]
         );
-        factory(User::class, 100)->create();
+        factory(User::class, 1)->create();
     }
 }
