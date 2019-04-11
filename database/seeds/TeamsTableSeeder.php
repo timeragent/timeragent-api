@@ -13,6 +13,6 @@ class TeamsTableSeeder extends Seeder
     public function run()
     {
         \DB::table('teams')->delete();
-        factory(Team::class, 50)->create();
+        factory(Team::class, 5)->create();
     }
 }

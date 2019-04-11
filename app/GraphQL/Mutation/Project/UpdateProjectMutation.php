@@ -67,6 +67,7 @@ class UpdateProjectMutation extends Mutation
                     $users[$user['uuid']] = [
                         'team_uuid' => $team['uuid'],
                         'cost_rate' => $user['options']['costRate'] ?? null,
+                        'time_limit' => $user['options']['time_limit'] ?? 8,
                     ];
                 }
                 return $users;
@@ -77,7 +78,8 @@ class UpdateProjectMutation extends Mutation
 
                 return [$user['uuid'] => [
                     'team_uuid' => null,
-                    'cost_rate' => $user['options']['costRate']
+                    'cost_rate' => $user['options']['costRate'],
+                    'time_limit' => $user['options']['time_limit'] ?? 8,
                 ]];
             })
             ->toArray();

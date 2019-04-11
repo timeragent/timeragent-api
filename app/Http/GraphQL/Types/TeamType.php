@@ -43,7 +43,7 @@ class TeamType
                               $query->where('uuid', $team->uuid);
                           }
                           )
-                          ->withPivot('cost_rate')
+                          ->withPivot('cost_rate', 'time_limit')
                           ->get();
         }
 

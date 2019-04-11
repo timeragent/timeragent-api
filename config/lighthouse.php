@@ -24,7 +24,7 @@ return [
     | This setting controls if GET requests to the GraphQL endpoint are allowed.
     |
     */
-    'route_enable_get' => true,
+    'route_enable_get' => false,
 
     /*
     |--------------------------------------------------------------------------

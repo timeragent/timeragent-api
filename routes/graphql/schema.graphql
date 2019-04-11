@@ -271,6 +271,7 @@ type TokenData {
 
 type Options {
   costRate: Float
+  timeLimit: Float
   status: Int
 }
 
@@ -373,5 +374,6 @@ input ContactInput {
 
 input OptionsInput {
   costRate: Float
+  timeLimit: Float
   status: Int
 }

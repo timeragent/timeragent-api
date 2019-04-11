@@ -36,7 +36,7 @@ class CreateProjectMutation extends Mutation
             ],
             'project.name' => [
                 'required',
-            ]
+            ],
         ];
     }
 
@@ -45,38 +45,47 @@ class CreateProjectMutation extends Mutation
         $params = collect($args['project']);
 
         $project_data = [
-            'uuid' => $params['uuid'],
-            'name' => $params['name'],
+            'uuid'        => $params['uuid'],
+            'name'        => $params['name'],
             'client_uuid' => $params['clientUuid'],
-            'owner_type' => $params['ownerType'],
-            'owner_uuid' => $params['ownerUuid'],
+            'owner_type'  => $params['ownerType'],
+            'owner_uuid'  => $params['ownerUuid'],
         ];
 
-        $project = Project::create($project_data);
+        $project     = Project::create($project_data);
         $teams_uuids = collect($args['project']['teams'])
             ->pluck('uuid')
             ->toArray();
 
 
         $team_users_uuids = collect($args['project']['teams'])
-            ->map(function ($team) {
-                foreach($team['users'] as $user) {
-                    $users[$user['uuid']] = [
-                        'team_uuid' => $team['uuid'],
-                        'cost_rate' => $user['options']['costRate']
+            ->map(
+                function ($team) {
+                    foreach ($team['users'] as $user) {
+                        $users[$user['uuid']] = [
+                            'team_uuid' => $team['uuid'],
+                            'cost_rate' => $user['options']['costRate'],
+                            'time_limit' => $user['options']['timeLimit'],
+                        ];
+                    }
+
+                    return $users;
+                }
+            )
+            ->toArray();
+        $users_uuids      = collect($args['project']['users'])
+            ->map(
+                function ($user) {
+
+                    return [
+                        $user['uuid'] => [
+                            'team_uuid' => null,
+                            'cost_rate' => $user['options']['costRate'],
+                            'time_limit' => $user['options']['timeLimit'],
+                        ],
                     ];
                 }
-                return $users;
-            })
-            ->toArray();
-        $users_uuids = collect($args['project']['users'])
-            ->map(function($user) {
-
-                return [$user['uuid'] => [
-                    'team_uuid' => null,
-                    'cost_rate' => $user['options']['costRate']
-                ]];
-            })
+            )
             ->toArray();
 
         $project->teams()->sync($teams_uuids);

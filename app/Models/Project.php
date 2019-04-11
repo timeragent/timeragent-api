@@ -55,7 +55,7 @@ class Project extends BaseModel
     {
         return $this->belongsToMany(User::class)
                     ->wherePivot('team_uuid', null)
-                    ->withPivot('cost_rate', 'team_uuid')
+                    ->withPivot('cost_rate', 'team_uuid', 'time_limit')
                     ->withTimestamps();
     }
 
@@ -69,7 +69,7 @@ class Project extends BaseModel
     public function users()
     {
         return $this->belongsToMany(User::class)
-                    ->withPivot('cost_rate')
+                    ->withPivot('cost_rate', 'time_limit')
                     ->withTimestamps();
     }
 

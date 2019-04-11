@@ -90,7 +90,7 @@ class TeamType extends GraphQLType
                               $query->where('uuid', $team->uuid);
                           }
                           )
-                          ->withPivot('cost_rate')
+                          ->withPivot('cost_rate', 'time_limit')
                           ->get();
         } else {
             return $team->users;

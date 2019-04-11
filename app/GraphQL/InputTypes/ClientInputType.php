@@ -2,8 +2,6 @@
 
 namespace App\GraphQL\InputTypes;
 
-
-use GraphQL;
 use GraphQL\Type\Definition\Type;
 use Folklore\GraphQL\Support\InputType;
 
